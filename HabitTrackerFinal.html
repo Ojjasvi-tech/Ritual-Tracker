@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>Ritual — Habits · Tasks · Goals</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f4f0;--bg2:#f0ebe3;--surface:#fff;--surface2:#faf8f5;
+  --border:#e8e0d5;--border2:#d4c9bb;
+  --primary:#c17b3f;--plt:#f5ebe0;--pdk:#9a5e28;
+  --accent:#4a7c6f;--alt:#e6f0ee;
+  --gold:#d4a853;--glt:#fdf6e7;
+  --blue:#3a6abf;--blt:#e8eefa;
+  --purple:#7c5cbf;--purlt:#eeebfa;
+  --text:#2c2416;--t2:#7a6a55;--t3:#b0a090;
+  --danger:#c0392b;--rlt:#fbeaea;
+  --xs:0 1px 4px rgba(44,36,22,.06);
+  --sm:0 2px 12px rgba(44,36,22,.08);
+  --md:0 4px 24px rgba(44,36,22,.10);
+  --lg:0 8px 40px rgba(44,36,22,.14);
+  --r:10px;--rl:16px;--rxl:22px;--rxx:28px
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 10% 0%,rgba(193,123,63,.07),transparent 60%),radial-gradient(ellipse 60% 50% at 90% 100%,rgba(74,124,111,.06),transparent 60%);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:20px 16px 90px}
+
+/* tabs */
+.tab-bar{display:flex;gap:4px;background:var(--bg2);border-radius:var(--rxl);padding:4px;margin-bottom:22px;border:1.5px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{flex:1;min-width:60px;padding:8px 5px;border:none;background:transparent;border-radius:var(--rl);font-family:'Plus Jakarta Sans',sans-serif;font-size:.74rem;font-weight:600;color:var(--t2);cursor:pointer;transition:all .2s;white-space:nowrap;text-align:center}
+.tab-btn.active{background:var(--surface);color:var(--primary);box-shadow:var(--xs)}
+.tab-btn:hover:not(.active){color:var(--text)}
+.tab-pane{display:none}.tab-pane.active{display:block}
+
+/* header */
+header{text-align:center;padding:24px 0 18px}
+.eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);background:var(--plt);border:1px solid rgba(193,123,63,.25);border-radius:99px;padding:4px 13px;margin-bottom:13px}
+header h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.8rem,5vw,3rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:7px;letter-spacing:-.02em}
+header h1 span{color:var(--primary)}
+header p{color:var(--t2);font-size:.9rem}
+
+/* quote */
+.quote-strip{background:linear-gradient(135deg,var(--plt),var(--glt));border:1.5px solid rgba(193,123,63,.2);border-radius:var(--rxl);padding:14px 20px;margin-bottom:18px;text-align:center}
+.quote-strip blockquote{font-family:'Playfair Display',Georgia,serif;font-size:clamp(.88rem,2vw,1.08rem);font-weight:600;color:var(--pdk);line-height:1.5;font-style:italic}
+.quote-strip cite{font-size:.7rem;color:var(--t2);margin-top:5px;display:block;font-style:normal;font-weight:600}
+
+/* date nav */
+.date-nav{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px}
+.dn-btn{width:34px;height:34px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);color:var(--t2);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0;box-shadow:var(--xs)}
+.dn-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--plt)}
+#cur-date{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:clamp(.85rem,2.2vw,1rem);color:var(--text);text-align:center;flex:1;max-width:280px}
+
+/* stats */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+@media(max-width:560px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+.stat-c{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:13px 10px 11px;text-align:center;box-shadow:var(--xs);transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.stat-c:hover{transform:translateY(-2px);box-shadow:var(--sm)}
+.stat-c::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px}
+.sa::after{background:linear-gradient(90deg,var(--primary),var(--gold))}
+.sg::after{background:linear-gradient(90deg,var(--accent),#6aaa9a)}
+.sf::after{background:linear-gradient(90deg,#e07b3f,#f0a860)}
+.st::after{background:linear-gradient(90deg,#4a8c9f,#6ab0c0)}
+.s-icon{font-size:1.1rem;margin-bottom:4px;display:block}
+.s-num{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.4rem,3.5vw,2rem);font-weight:700;line-height:1;margin-bottom:3px}
+.sa .s-num{color:var(--primary)}.sg .s-num{color:var(--accent)}.sf .s-num{color:#d06030}.st .s-num{color:#3a7a8c}
+.s-lbl{font-size:.63rem;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.07em}
+.prog-t{height:3px;background:var(--border);border-radius:99px;margin-top:7px;overflow:hidden}
+.prog-f{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--gold));transition:width .5s cubic-bezier(.34,1.56,.64,1)}
+
+/* section head */
+.sh{display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.sh span{font-size:.64rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);white-space:nowrap}
+.sh::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── Collapsible add habit ── */
+.add-panel{background:var(--surface);border:1.5px solid rgba(193,123,63,.28);border-radius:var(--rxx);padding:clamp(13px,3vw,20px);box-shadow:var(--sm);margin-bottom:18px;position:relative;overflow:hidden}
+.add-panel::before{content:'';position:absolute;inset:0;background:linear-gradient(145deg,rgba(193,123,63,.03),transparent 50%);pointer-events:none}
+.add-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.add-toggle h3{font-family:'Playfair Display',Georgia,serif;font-size:.97rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px}
+.chev{font-size:.85rem;color:var(--t3);transition:transform .25s}
+.chev.open{transform:rotate(180deg)}
+.add-body{overflow:hidden;max-height:0;transition:max-height .35s ease}
+.add-body.open{max-height:1400px}
+.add-inner{padding-top:15px}
+
+/* forms */
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:10px}
+.fgf{grid-column:1/-1}
+.fgrp{display:flex;flex-direction:column;gap:5px}
+.fgrp label{font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--t3)}
+.fgrp input,.fgrp select,.fgrp textarea{border:1.5px solid var(--border);border-radius:var(--r);padding:8px 11px;font-size:.87rem;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);background:var(--surface2);transition:border-color .2s,background .2s;-webkit-appearance:none;appearance:none}
+.fgrp input::placeholder,.fgrp textarea::placeholder{color:var(--t3)}
+.fgrp input:focus,.fgrp select:focus,.fgrp textarea:focus{outline:none;border-color:var(--primary);background:#fff}
+.op-row{display:flex;gap:4px;flex-wrap:wrap}
+.op-b{flex:1;min-width:40px;padding:6px 3px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface2);color:var(--t2);font-family:'Plus Jakarta Sans',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;text-align:center;transition:all .18s}
+.op-b:hover{border-color:var(--primary);color:var(--primary);background:var(--plt)}
+.op-b.sel{border-color:var(--primary);background:var(--plt);color:var(--pdk)}
+.op-hint{font-size:.68rem;color:var(--t3);margin-top:4px;padding:5px 9px;background:var(--bg2);border-radius:7px}
+.emoji-grid{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.e-opt{font-size:1.3rem;cursor:pointer;padding:5px;border-radius:8px;border:2px solid transparent;background:var(--bg2);transition:all .15s;line-height:1;user-select:none}
+.e-opt:hover{background:var(--plt);transform:scale(1.1)}
+.e-opt.sel{border-color:var(--primary);background:var(--plt);transform:scale(1.1)}
+.cbox{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--rl);padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.crow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.clbl{font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t2);white-space:nowrap}
+.ewrap{position:relative;width:46px;height:38px;flex-shrink:0}
+.esb{width:100%;height:100%;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--r);font-size:1.25rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;pointer-events:none}
+.ecap{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;font-size:16px;border:none;background:transparent;padding:0}
+.ecap:focus{outline:none}
+.eprev{font-size:1.7rem;min-width:38px;height:38px;display:flex;align-items:center;justify-content:center}
+.btn-use{height:38px;background:var(--primary);color:#fff;border:none;border-radius:var(--r);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:700;padding:0 13px;cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn-use:hover{background:var(--pdk)}
+.chint{font-size:.68rem;color:var(--t3);line-height:1.5}
+.chint kbd{background:var(--surface);border:1px solid var(--border2);border-radius:3px;padding:1px 4px;font-size:.66rem;font-family:monospace;color:var(--t2)}
+.btn-submit{margin-top:15px;width:100%;background:linear-gradient(135deg,var(--primary),var(--gold));color:#fff;border:none;border-radius:var(--rl);padding:12px 22px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(193,123,63,.3);transition:all .22s}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 7px 22px rgba(193,123,63,.4)}
+
+/* habit cards */
+#habits-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr));gap:12px;margin-bottom:22px}
+.hcard{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rxl);padding:15px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:visible;box-shadow:var(--xs);transition:transform .2s,box-shadow .2s,border-color .3s}
+.hcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--rxl) var(--rxl) 0 0;background:linear-gradient(90deg,var(--primary),var(--gold));opacity:0;transition:opacity .3s}
+.hcard:hover{transform:translateY(-2px);box-shadow:var(--md)}
+.hcard.done-c{border-color:rgba(74,124,111,.35);background:linear-gradient(135deg,#f7faf8,#f0f8f5)}
+.hcard.done-c::before{opacity:1;background:linear-gradient(90deg,var(--accent),#6aaa9a)}
+.hhead{display:flex;align-items:flex-start;gap:10px}
+.h-ebox{width:42px;height:42px;flex-shrink:0;background:var(--plt);border:1.5px solid rgba(193,123,63,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;line-height:1;transition:background .3s}
+.done-c .h-ebox{background:var(--alt);border-color:rgba(74,124,111,.2)}
+.hbody{flex:1;min-width:0}
+.hname{font-family:'Playfair Display',Georgia,serif;font-size:.92rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.htags{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.ctag{font-size:.62rem;font-weight:600;color:var(--t3);background:var(--bg2);border-radius:99px;padding:1px 7px;border:1px solid var(--border)}
+.stag{font-size:.62rem;font-weight:700;border-radius:99px;padding:1px 7px;background:var(--glt);color:#b07a20;border:1px solid rgba(212,168,83,.3)}
+.stag.hot{background:#fff0e8;color:var(--pdk);border-color:rgba(193,123,63,.35)}
+.ftag{font-size:.62rem;font-weight:600;border-radius:99px;padding:1px 7px;background:#e5f3f7;color:#3a7a8c;border:1px solid rgba(58,122,140,.25)}
+.obadge{display:inline-flex;align-items:center;gap:3px;font-size:.62rem;font-weight:700;border-radius:99px;padding:1px 7px;background:var(--glt);color:var(--pdk);border:1px solid rgba(193,123,63,.25)}
+/* FIXED: card-actions row outside the card overflow */
+.card-actions{position:absolute;top:8px;right:8px;display:flex;gap:3px;z-index:20}
+.ca-btn{background:none;border:none;color:var(--t3);cursor:pointer;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.78rem;transition:all .18s}
+.ca-btn:hover{background:var(--bg2);color:var(--text)}
+.ca-btn.del:hover{background:var(--rlt);color:var(--danger)}
+/* check button */
+.btn-check{width:100%;border-radius:var(--r);padding:9px 12px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:.83rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .22s;background:var(--bg2);border:1.5px solid var(--border);color:var(--t2)}
+.btn-check:hover{background:var(--plt);border-color:rgba(193,123,63,.4);color:var(--primary)}
+.btn-check.is-done{background:var(--alt);border-color:rgba(74,124,111,.4);color:var(--accent)}
+/* qty */
+.qty-ctrl{display:flex;flex-direction:column;gap:6px}
+.qty-row{display:flex;align-items:center;gap:7px}
+.qsb{width:32px;height:40px;flex-shrink:0;border-radius:8px;border:1.5px solid var(--border);background:var(--bg2);color:var(--t2);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;font-weight:700}
+.qsb:hover{background:var(--plt);border-color:rgba(193,123,63,.4);color:var(--primary)}
+.qdi{flex:1;height:40px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;font-weight:700;color:var(--text);text-align:center;padding:0 4px;transition:border-color .2s;-moz-appearance:textfield;appearance:textfield}
+.qdi::-webkit-outer-spin-button,.qdi::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.qdi:focus{outline:none;border-color:var(--primary)}
+.qul{font-size:.65rem;color:var(--t3);text-align:center;margin-top:1px}
+.qsl{flex:1;-webkit-appearance:none;appearance:none;height:5px;border-radius:99px;background:var(--border);outline:none;cursor:pointer}
+.qsl::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--primary);cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(193,123,63,.4)}
+.qsl::-moz-range-thumb{width:17px;height:17px;border-radius:50%;background:var(--primary);cursor:pointer;border:2px solid #fff}
+.slw{display:flex;align-items:center;gap:6px}
+.slm,.slx{font-size:.6rem;color:var(--t3);font-weight:600;min-width:18px}
+.slx{text-align:right}
+.qpr{display:flex;gap:4px;flex-wrap:wrap}
+.qp{padding:2px 8px;border:1px solid var(--border);border-radius:99px;background:var(--surface2);font-size:.65rem;font-weight:600;color:var(--t2);cursor:pointer;transition:all .15s}
+.qp:hover{background:var(--plt);border-color:rgba(193,123,63,.4);color:var(--primary)}
+.qbar{height:4px;background:var(--border);border-radius:99px;overflow:hidden}
+.qbf{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--gold));transition:width .3s}
+.qbf.done{background:linear-gradient(90deg,var(--accent),#6aaa9a)}
+.qbf.over{background:linear-gradient(90deg,#e06060,#f08080)}
+/* wk dots */
+.wkp{background:var(--bg2);border-radius:var(--r);padding:6px 10px;display:flex;align-items:center;gap:8px}
+.wkdots{display:flex;gap:3px}
+.wkd{width:15px;height:15px;border-radius:4px;background:var(--border);border:1.5px solid var(--border2);transition:all .2s}
+.wkd.hit{background:var(--accent);border-color:transparent}
+.wklbl{font-size:.68rem;color:var(--t2);font-weight:600;flex:1}
+.hnote{font-family:'Plus Jakarta Sans',sans-serif;font-size:.77rem;color:var(--t2);border:1.5px solid var(--border);border-radius:var(--r);padding:6px 9px;width:100%;resize:none;background:var(--surface2);transition:border-color .2s}
+.hnote::placeholder{color:var(--t3)}
+.hnote:focus{outline:none;border-color:var(--primary)}
+
+/* edit modal overlay */
+.modal-bg{position:fixed;inset:0;background:rgba(44,36,22,.45);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border-radius:var(--rxx);padding:clamp(18px,4vw,28px);max-width:500px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--lg);transform:translateY(16px);transition:transform .25s}
+.modal-bg.open .modal{transform:translateY(0)}
+.modal h3{font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.modal-actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.btn-save{flex:1;background:linear-gradient(135deg,var(--primary),var(--gold));color:#fff;border:none;border-radius:var(--r);padding:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-save:hover{opacity:.9}
+.btn-cancel{flex:1;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r);padding:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:600;color:var(--t2);cursor:pointer;transition:all .2s}
+.btn-cancel:hover{border-color:var(--primary);color:var(--primary)}
+
+/* empty */
+.empty{text-align:center;padding:36px 20px;grid-column:1/-1}
+.empty .ei{font-size:2.8rem;margin-bottom:10px;display:block;animation:fl 3s ease-in-out infinite}
+.empty h3{font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;color:var(--t2);margin-bottom:6px}
+.empty p{font-size:.84rem;color:var(--t3)}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+/* ══ TASKS ══ */
+.tasks-wrap{}
+.tasks-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:9px}
+.tasks-hdr h2{font-family:'Playfair Display',Georgia,serif;font-size:1.15rem;font-weight:700}
+.vbtns{display:flex;gap:4px}
+.vb{padding:5px 11px;border:1.5px solid var(--border);border-radius:99px;background:var(--surface2);font-size:.72rem;font-weight:600;color:var(--t2);cursor:pointer;transition:all .18s}
+.vb.active{background:var(--plt);border-color:rgba(193,123,63,.4);color:var(--primary)}
+.t-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:16px}
+.tsc{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:12px 9px;text-align:center;box-shadow:var(--xs)}
+.tsc-n{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;font-weight:700;line-height:1}
+.tsc-l{font-size:.62rem;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+.add-task-bar{display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap;align-items:stretch}
+.ati{flex:1;min-width:150px;border:1.5px solid var(--border);border-radius:var(--r);padding:9px 13px;font-size:.85rem;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);background:var(--surface);transition:border-color .2s}
+.ati:focus{outline:none;border-color:var(--primary)}
+.ati::placeholder{color:var(--t3)}
+.tmsel{border:1.5px solid var(--border);border-radius:var(--r);padding:7px 9px;font-size:.76rem;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);background:var(--surface);-webkit-appearance:none;appearance:none;cursor:pointer;transition:border-color .2s}
+.tmsel:focus{outline:none;border-color:var(--primary)}
+.tdi{border:1.5px solid var(--border);border-radius:var(--r);padding:7px 9px;font-size:.76rem;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);background:var(--surface);transition:border-color .2s}
+.tdi:focus{outline:none;border-color:var(--primary)}
+.btn-at{background:var(--primary);color:#fff;border:none;border-radius:var(--r);padding:9px 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn-at:hover{background:var(--pdk)}
+/* task groups */
+.tgrp{margin-bottom:18px}
+.tgh{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.tgt{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.tgc{font-size:.62rem;font-weight:700;background:var(--bg2);color:var(--t3);border-radius:99px;padding:1px 6px;border:1px solid var(--border)}
+.tgh::after{content:'';flex:1;height:1px;background:var(--border)}
+/* task card */
+.tcard{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rl);padding:11px 13px;display:flex;align-items:flex-start;gap:10px;box-shadow:var(--xs);transition:all .2s;margin-bottom:6px}
+.tcard:hover{box-shadow:var(--sm);border-color:var(--border2)}
+.tcard.tdone{opacity:.6;background:var(--surface2)}
+.tchk{width:19px;height:19px;flex-shrink:0;border:2px solid var(--border2);border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;margin-top:1px}
+.tchk:hover{border-color:var(--primary)}
+.tchk.ck{background:var(--accent);border-color:var(--accent)}
+.tchk.ck::after{content:'✓';font-size:.7rem;color:#fff;font-weight:700}
+.tbody{flex:1;min-width:0}
+.ttitle{font-size:.85rem;font-weight:600;color:var(--text);line-height:1.35;transition:all .2s}
+.tdone .ttitle{text-decoration:line-through;color:var(--t3)}
+.tmrow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:3px}
+.ttag{font-size:.6rem;font-weight:700;border-radius:99px;padding:1px 6px}
+.ph{background:#fff0e8;color:var(--pdk);border:1px solid rgba(193,123,63,.3)}
+.pm{background:var(--glt);color:#8a6010;border:1px solid rgba(212,168,83,.3)}
+.pl{background:#e5f3f7;color:#3a7a8c;border:1px solid rgba(58,122,140,.25)}
+.ptc{background:var(--bg2);color:var(--t3);border:1px solid var(--border)}
+.pgl{background:var(--purlt);color:var(--purple);border:1px solid rgba(124,92,191,.25)}
+.tdue{font-size:.6rem;font-weight:600;color:var(--t3)}
+.tdue.ov{color:var(--danger)}
+.tdue.td{color:var(--primary)}
+.tact{display:flex;align-items:center;gap:3px;flex-shrink:0}
+.tab{background:none;border:none;color:var(--t3);cursor:pointer;width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:all .18s}
+.tab:hover{background:var(--bg2);color:var(--text)}
+.tab.del:hover{background:var(--rlt);color:var(--danger)}
+/* kanban */
+.kw{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:10px}
+.kcol{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--rxl);padding:11px}
+.kcolt{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--t3);margin-bottom:9px;display:flex;align-items:center;gap:5px}
+.kdot{width:7px;height:7px;border-radius:50%}
+
+/* ══ GOALS ══ */
+.goals-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:11px;margin-bottom:18px}
+.gcard{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rxl);padding:14px;box-shadow:var(--xs);transition:transform .2s,box-shadow .2s;position:relative}
+.gcard:hover{transform:translateY(-2px);box-shadow:var(--sm)}
+.gcard-actions{position:absolute;top:8px;right:8px;display:flex;gap:3px;z-index:10}
+.gcard-actions button{background:none;border:none;color:var(--t3);cursor:pointer;width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.73rem;transition:all .18s}
+.gcard-actions .del:hover{background:var(--rlt);color:var(--danger)}
+.gcard-actions .edt:hover{background:var(--blt);color:var(--blue)}
+.ghead{display:flex;align-items:flex-start;gap:9px;margin-bottom:9px}
+.gemoji{font-size:1.5rem;flex-shrink:0}
+.ginfo{flex:1;min-width:0}
+.gtitle{font-family:'Playfair Display',Georgia,serif;font-size:.92rem;font-weight:600;color:var(--text);margin-bottom:2px}
+.gdl{font-size:.65rem;color:var(--t3);font-weight:600}
+.gpb{height:5px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:7px}
+.gpf{height:100%;border-radius:99px;transition:width .4s}
+.gstats{display:flex;justify-content:space-between;align-items:center}
+.gtc{font-size:.7rem;color:var(--t2);font-weight:600}
+.gpct{font-size:.75rem;font-weight:700}
+.add-goal-form{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rxx);padding:clamp(13px,3vw,20px);box-shadow:var(--xs);margin-bottom:16px}
+.add-goal-form h3{font-family:'Playfair Display',Georgia,serif;font-size:.95rem;font-weight:600;margin-bottom:11px;display:flex;align-items:center;gap:7px}
+
+/* ══ DASHBOARD ══ */
+.dpanel{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rxx);padding:clamp(15px,3.5vw,26px);box-shadow:var(--xs);margin-bottom:18px}
+.dpanel h2{font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:5px}
+.dsub{font-size:.78rem;color:var(--t2);margin-bottom:14px}
+.dperiods{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.dpb{padding:5px 13px;border:1.5px solid var(--border);border-radius:99px;background:var(--surface2);font-family:'Plus Jakarta Sans',sans-serif;font-size:.76rem;font-weight:600;color:var(--t2);cursor:pointer;transition:all .18s}
+.dpb.active{background:var(--plt);border-color:rgba(193,123,63,.4);color:var(--primary)}
+.dmgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,138px),1fr));gap:9px;margin-bottom:16px}
+.dm{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--rl);padding:11px;text-align:center}
+.dmv{font-family:'Playfair Display',Georgia,serif;font-size:1.75rem;font-weight:700;color:var(--primary);line-height:1}
+.dml{font-size:.64rem;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
+.dms{font-size:.68rem;color:var(--t2);margin-top:1px}
+.ptbl{width:100%;border-collapse:collapse;font-size:.79rem;min-width:340px}
+.ptbl th{color:var(--t3);font-weight:600;padding:6px 7px;text-align:left;font-size:.67rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:1.5px solid var(--border)}
+.ptbl th.r{text-align:right}
+.ptbl td{padding:8px 7px;border-bottom:1px solid var(--border)}
+.ptbl td.r{text-align:right}
+.ptbl tr:last-child td{border-bottom:none}
+.bw{display:flex;align-items:center;gap:7px}
+.bt{flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden}
+.bf{height:100%;border-radius:99px;transition:width .4s}
+.pt{font-size:.7rem;font-weight:700;min-width:28px;text-align:right}
+.grade{display:inline-block;font-size:.67rem;font-weight:700;border-radius:99px;padding:2px 7px}
+.gA{background:#e6f0ee;color:var(--accent)}.gB{background:var(--glt);color:#8a6010}.gC{background:#fff0e8;color:var(--primary)}.gD{background:var(--rlt);color:var(--danger)}
+.hm-sec{margin-top:18px}
+.hm-sec h3{font-family:'Playfair Display',Georgia,serif;font-size:.93rem;font-weight:600;margin-bottom:10px}
+.hmg{display:flex;gap:2px;flex-wrap:wrap}
+.hmc{width:13px;height:13px;border-radius:3px;transition:all .2s;cursor:default;flex-shrink:0}
+.hmc:hover{transform:scale(1.4)}
+.hm0{background:var(--border)}.hm1{background:#c8e3de}.hm2{background:#8ec4bb}.hm3{background:#5aa99e}.hm4{background:var(--accent)}
+.hmleg{display:flex;align-items:center;gap:5px;margin-top:6px;font-size:.63rem;color:var(--t3)}
+.hmls{width:11px;height:11px;border-radius:2px}
+
+/* ══ REPORT ══ */
+.rpanel{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rxx);padding:clamp(15px,3.5vw,26px);box-shadow:var(--xs);margin-bottom:18px}
+.rpanel h2{font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:600;margin-bottom:5px}
+.rsub{font-size:.78rem;color:var(--t2);margin-bottom:14px}
+.rctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.rpb{padding:5px 13px;border:1.5px solid var(--border);border-radius:99px;background:var(--surface2);font-family:'Plus Jakarta Sans',sans-serif;font-size:.76rem;font-weight:600;color:var(--t2);cursor:pointer;transition:all .18s}
+.rpb.active{background:var(--plt);border-color:rgba(193,123,63,.4);color:var(--primary)}
+.rsel{border:1.5px solid var(--border);border-radius:var(--r);padding:6px 10px;font-size:.8rem;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);background:var(--surface2);-webkit-appearance:none;appearance:none;cursor:pointer}
+.rsel:focus{outline:none;border-color:var(--primary)}
+.rtwrap{overflow-x:auto;border-radius:var(--r);border:1.5px solid var(--border)}
+.rt{width:100%;border-collapse:collapse;font-size:.79rem;min-width:400px}
+.rt thead tr{background:var(--bg2)}
+.rt th{padding:8px 6px;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);text-align:center;border-bottom:1.5px solid var(--border)}
+.rt th.hc{text-align:left;min-width:120px;padding-left:11px}
+.rt td{padding:8px 6px;border-bottom:1px solid var(--border);text-align:center;vertical-align:middle}
+.rt td.hc{text-align:left;padding-left:11px}
+.rt tr:last-child td{border-bottom:none}
+.rt tr:hover td{background:var(--bg2)}
+.chk{color:var(--accent);font-size:.9rem;font-weight:700}
+.crs{color:var(--border2);font-size:.85rem}
+.rv{font-family:'Playfair Display',Georgia,serif;font-size:.88rem;font-weight:600}
+.rv.hit{color:var(--accent)}.rv.miss{color:var(--t3)}
+.rvs{font-size:.6rem;color:var(--t3)}
+.rn{font-weight:600;color:var(--text)}
+.rs{display:inline-flex;align-items:center;gap:2px;font-size:.63rem;font-weight:700;color:var(--pdk);background:var(--glt);border-radius:99px;padding:1px 5px;margin-left:3px}
+.fn-note{background:var(--bg2)}
+.fn-note td{font-size:.68rem;color:var(--t3);padding:2px 11px 4px}
+
+/* ══ JOURNAL ══ */
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:12px;margin-top:12px}
+.bc{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rxl);overflow:hidden;box-shadow:var(--xs);transition:transform .2s,box-shadow .2s;cursor:pointer}
+.bc:hover{transform:translateY(-3px);box-shadow:var(--md)}
+.bc-img{height:90px;display:flex;align-items:center;justify-content:center;font-size:2.6rem}
+.bc-body{padding:13px}
+.bpill{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border-radius:99px;padding:2px 7px;margin-bottom:6px}
+.btitle{font-family:'Playfair Display',Georgia,serif;font-size:.9rem;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:4px}
+.bexc{font-size:.73rem;color:var(--t2);line-height:1.5}
+.bmeta{font-size:.63rem;color:var(--t3);margin-top:7px}
+.bhero{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rxx);overflow:hidden;box-shadow:var(--sm);display:grid;grid-template-columns:1fr 1fr;margin-bottom:13px;cursor:pointer;transition:box-shadow .2s}
+.bhero:hover{box-shadow:var(--md)}
+@media(max-width:560px){.bhero{grid-template-columns:1fr}}
+.bhi{min-height:150px;display:flex;align-items:center;justify-content:center;font-size:4rem}
+.bhb{padding:18px 16px;display:flex;flex-direction:column;justify-content:center}
+.bexp{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--rxx);padding:clamp(16px,4vw,26px);box-shadow:var(--sm);margin-bottom:12px;display:none}
+.bexp.open{display:block;animation:fd .3s ease}
+@keyframes fd{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.bexp h2{font-family:'Playfair Display',Georgia,serif;font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:13px;line-height:1.3}
+.bexp p{font-size:.87rem;color:var(--t2);line-height:1.75;margin-bottom:11px}
+.bexp h3{font-family:'Playfair Display',Georgia,serif;font-size:.93rem;font-weight:600;color:var(--text);margin:17px 0 6px}
+.tg2{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,185px),1fr));gap:8px;margin:11px 0}
+.tc2{background:var(--bg2);border-radius:var(--rl);padding:11px;border:1.5px solid var(--border)}
+.tci{font-size:1.3rem;margin-bottom:5px}
+.tct{font-weight:700;font-size:.8rem;color:var(--text);margin-bottom:3px}
+.tctx{font-size:.73rem;color:var(--t2);line-height:1.5}
+.bcb{margin-top:13px;background:var(--bg2);border:1.5px solid var(--border);border-radius:8px;padding:6px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;color:var(--t2);cursor:pointer;transition:all .18s}
+.bcb:hover{background:var(--plt);color:var(--primary);border-color:rgba(193,123,63,.4)}
+/* AI badge */
+.ai-badge{display:inline-flex;align-items:center;gap:4px;font-size:.63rem;font-weight:700;background:var(--purlt);color:var(--purple);border-radius:99px;padding:2px 8px;border:1px solid rgba(124,92,191,.25);margin-bottom:8px}
+
+/* ══ NOTIFICATIONS PANEL ══ */
+.notif-panel{background:var(--surface);border:1.5px solid rgba(61,106,191,.25);border-radius:var(--rxx);padding:clamp(13px,3vw,20px);margin-bottom:16px;box-shadow:var(--xs)}
+.notif-panel h3{font-family:'Playfair Display',Georgia,serif;font-size:.95rem;font-weight:600;margin-bottom:11px;display:flex;align-items:center;gap:7px}
+.notif-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+.notif-row:last-child{border-bottom:none}
+.ntask-name{font-size:.84rem;font-weight:600;color:var(--text);flex:1}
+.ntask-due{font-size:.72rem;color:var(--t3)}
+.ntime-sel{border:1.5px solid var(--border);border-radius:var(--r);padding:5px 8px;font-size:.75rem;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);background:var(--surface2);-webkit-appearance:none;appearance:none;cursor:pointer}
+.ntime-sel:focus{outline:none;border-color:var(--primary)}
+.nbtn{background:var(--blt);color:var(--blue);border:1.5px solid rgba(61,106,191,.3);border-radius:8px;padding:4px 10px;font-size:.73rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .18s;white-space:nowrap}
+.nbtn:hover{background:var(--blue);color:#fff}
+.nbtn.set{background:var(--alt);color:var(--accent);border-color:rgba(74,124,111,.3)}
+.notif-info{font-size:.72rem;color:var(--t3);margin-top:8px;padding:6px 10px;background:var(--blt);border-radius:8px;line-height:1.5}
+
+/* toast */
+#tc{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;width:min(92vw,360px)}
+.toast{background:var(--surface);border:1.5px solid var(--border);border-radius:15px;padding:11px 13px;display:flex;align-items:flex-start;gap:9px;box-shadow:var(--lg);width:100%;animation:tIn .38s cubic-bezier(.34,1.56,.64,1) forwards}
+.toast.out{animation:tOut .28s ease forwards}
+.ti{font-size:1.3rem;flex-shrink:0}
+.tt{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:.87rem;color:var(--text);margin-bottom:1px}
+.tm{font-size:.75rem;color:var(--t2);line-height:1.4}
+.ts{border-color:rgba(74,124,111,.35)}.tf{border-color:rgba(193,123,63,.4)}.tp{border-color:rgba(212,168,83,.5);background:linear-gradient(135deg,#fffdf5,#fff9ed)}
+@keyframes tIn{from{opacity:0;transform:translateY(13px) scale(.92)}to{opacity:1;transform:none}}
+@keyframes tOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(7px) scale(.94)}}
+.cp{position:fixed;width:6px;height:6px;border-radius:2px;pointer-events:none;z-index:9999;animation:cpf 1.2s ease-out forwards}
+@keyframes cpf{from{transform:translateY(-8px) rotate(0)}to{transform:translateY(75vh) rotate(600deg);opacity:0}}
+@media(max-width:480px){.stats-grid{grid-template-columns:repeat(2,1fr)} .t-stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">🌿 Daily Practice</div>
+  <h1>Your <span>Ritual</span></h1>
+  <p>Habits · Tasks · Goals — all in one place</p>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="today">📋 Today</button>
+  <button class="tab-btn" data-tab="tasks">✅ Tasks</button>
+  <button class="tab-btn" data-tab="report">📊 Report</button>
+  <button class="tab-btn" data-tab="dash">🏆 Dashboard</button>
+  <button class="tab-btn" data-tab="journal">✨ Journal</button>
+</div>
+
+<!-- ═══ TODAY ═══ -->
+<div class="tab-pane active" id="tab-today">
+  <div class="quote-strip" id="qstrip">
+    <blockquote id="qt"></blockquote>
+    <cite id="qa"></cite>
+  </div>
+  <div class="date-nav">
+    <button class="dn-btn" id="btn-prev">‹</button>
+    <span id="cur-date"></span>
+    <button class="dn-btn" id="btn-next">›</button>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-c sa"><span class="s-icon">📋</span><div class="s-num" id="st-total">0</div><div class="s-lbl">Habits</div></div>
+    <div class="stat-c sg"><span class="s-icon">✅</span><div class="s-num" id="st-done">0</div><div class="s-lbl">Done Today</div></div>
+    <div class="stat-c sf"><span class="s-icon">🔥</span><div class="s-num" id="st-str">0</div><div class="s-lbl">Best Streak</div></div>
+    <div class="stat-c st"><span class="s-icon">⚡</span><div class="s-num" id="st-pct">0%</div><div class="s-lbl">Today's Win</div><div class="prog-t"><div class="prog-f" id="pf" style="width:0%"></div></div></div>
+  </div>
+  <!-- Add habit collapsible -->
+  <div class="add-panel" id="add-panel">
+    <div class="add-toggle" id="add-toggle">
+      <h3>✦ Add a New Habit</h3>
+      <span class="chev" id="add-chev">▾</span>
+    </div>
+    <div class="add-body" id="add-body">
+      <div class="add-inner">
+        <div class="fg">
+          <div class="fgrp fgf"><label>Habit Name</label><input id="in-name" type="text" placeholder="e.g. Spend ≤ $100 today" maxlength="60"/></div>
+          <div class="fgrp"><label>Category</label>
+            <select id="in-cat">
+              <option value="Health">💪 Health &amp; Fitness</option><option value="Nutrition">🥗 Nutrition</option><option value="Mindfulness">🧘 Mindfulness</option><option value="Productivity">📚 Productivity</option><option value="Wellbeing">😴 Wellbeing</option><option value="Finance">💰 Finance</option><option value="Digital">📵 Digital Wellness</option><option value="Custom">⭐ Custom</option>
+            </select>
+          </div>
+          <div class="fgrp"><label>Type</label>
+            <select id="in-type"><option value="check">✅ Simple Check-off</option><option value="quantity">🔢 Quantity / Count</option></select>
+          </div>
+          <div class="fgrp"><label>Frequency</label>
+            <select id="in-freq"><option value="daily">Every Day</option><option value="1week">1× per Week</option><option value="2week">2× per Week</option><option value="3week">3× per Week</option><option value="4week">4× per Week</option><option value="5week">5× per Week</option><option value="custom">Custom</option></select>
+          </div>
+          <div class="fgrp" id="f-cfreq" style="display:none"><label>Times / Week</label><input id="in-cfreq" type="number" min="1" max="7" placeholder="e.g. 4"/></div>
+          <div class="fgrp" id="f-target" style="display:none"><label>Target Amount</label><input id="in-target" type="number" placeholder="e.g. 100" min="0"/></div>
+          <div class="fgrp" id="f-unit" style="display:none"><label>Unit</label><input id="in-unit" type="text" placeholder="$, glasses, mins…" maxlength="20"/></div>
+          <div class="fgrp fgf" id="f-op" style="display:none">
+            <label>Success when value is…</label>
+            <div class="op-row" id="op-row">
+              <button class="op-b" data-op="gte">≥ At least</button>
+              <button class="op-b sel" data-op="lte">≤ At most</button>
+              <button class="op-b" data-op="eq">= Exactly</button>
+              <button class="op-b" data-op="gt">&gt; More</button>
+              <button class="op-b" data-op="lt">&lt; Less</button>
+            </div>
+            <div class="op-hint" id="op-hint">e.g. Spend ≤ $100 — success if at or below target.</div>
+          </div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="fgrp" style="margin-bottom:9px"><label>Pick an Emoji</label></div>
+          <div class="emoji-grid" id="eg"></div>
+          <div class="cbox">
+            <div class="crow">
+              <span class="clbl">Custom:</span>
+              <div class="ewrap"><input id="ec" class="ecap" type="text" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" placeholder=" "/><div class="esb" id="esb">😊</div></div>
+              <div class="eprev" id="epv"></div>
+              <button class="btn-use" id="bu">Use ✓</button>
+            </div>
+            <div class="chint">Tap 😊 for keyboard. Desktop: <kbd>Win+.</kbd> or <kbd>⌃⌘Space</kbd></div>
+          </div>
+        </div>
+        <button class="btn-submit" id="btn-add">+ Add Habit</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh"><span>Your Habits</span></div>
+  <div id="habits-list"></div>
+
+  <!-- Blog teaser -->
+  <div style="margin-top:24px">
+    <div class="sh"><span>Habit Wisdom</span></div>
+    <div class="blog-grid" id="today-bg"></div>
+  </div>
+</div>
+
+<!-- ═══ TASKS ═══ -->
+<div class="tab-pane" id="tab-tasks">
+  <div class="tasks-hdr">
+    <h2>📌 Tasks &amp; Goals</h2>
+    <div class="vbtns">
+      <button class="vb active" data-v="goals">Goals</button>
+      <button class="vb" data-v="list">List</button>
+      <button class="vb" data-v="kanban">Board</button>
+      <button class="vb" data-v="notif">🔔 Reminders</button>
+    </div>
+  </div>
+
+  <div class="t-stats">
+    <div class="tsc"><div class="tsc-n" id="ts-tot" style="color:var(--primary)">0</div><div class="tsc-l">Total</div></div>
+    <div class="tsc"><div class="tsc-n" id="ts-done" style="color:var(--accent)">0</div><div class="tsc-l">Done</div></div>
+    <div class="tsc"><div class="tsc-n" id="ts-ov" style="color:var(--danger)">0</div><div class="tsc-l">Overdue</div></div>
+  </div>
+
+  <div class="add-task-bar">
+    <input class="ati" id="t-in" type="text" placeholder="Add a task… (press Enter)"/>
+    <select class="tmsel" id="t-pri"><option value="med">🟡 Medium</option><option value="high">🔴 High</option><option value="low">🟢 Low</option></select>
+    <select class="tmsel" id="t-cat"><option value="">Category</option><option value="Work">💼 Work</option><option value="Personal">🙋 Personal</option><option value="Health">💪 Health</option><option value="Finance">💰 Finance</option><option value="Learning">📚 Learning</option><option value="Home">🏠 Home</option></select>
+    <select class="tmsel" id="t-goal-sel"><option value="">Link Goal</option></select>
+    <input class="tdi" id="t-due" type="date" title="Due date"/>
+    <button class="btn-at" id="btn-at">+ Add</button>
+  </div>
+
+  <!-- List view -->
+  <div id="v-list" style="display:none"><div id="tgl"></div></div>
+  <!-- Goals view -->
+  <div id="v-goals">
+    <div class="add-goal-form">
+      <h3>🎯 Create a Goal</h3>
+      <div class="fg">
+        <div class="fgrp fgf"><label>Goal Title</label><input id="g-title" type="text" placeholder="e.g. Launch my side project" maxlength="60"/></div>
+        <div class="fgrp"><label>Emoji</label><input id="g-emoji" type="text" placeholder="🎯" maxlength="4" style="font-size:1.1rem;text-align:center"/></div>
+        <div class="fgrp"><label>Category</label><select id="g-cat"><option value="Work">💼 Work</option><option value="Personal">🙋 Personal</option><option value="Health">💪 Health</option><option value="Finance">💰 Finance</option><option value="Learning">📚 Learning</option><option value="Home">🏠 Home</option></select></div>
+        <div class="fgrp"><label>Target Date</label><input id="g-date" type="date"/></div>
+        <div class="fgrp"><label>Color</label><select id="g-color"><option value="#c17b3f">🟠 Amber</option><option value="#4a7c6f">🟢 Sage</option><option value="#3a6abf">🔵 Blue</option><option value="#7c5cbf">🟣 Purple</option><option value="#d4a853">🟡 Gold</option></select></div>
+      </div>
+      <button class="btn-submit" id="btn-ag" style="margin-top:11px">+ Add Goal</button>
+    </div>
+    <div class="sh"><span>Your Goals</span></div>
+    <div class="goals-grid" id="goals-grid"></div>
+  </div>
+  <!-- Kanban view -->
+  <div id="v-kanban" style="display:none"><div class="kw" id="kw"></div></div>
+  <!-- Reminders view -->
+  <div id="v-notif" style="display:none">
+    <div class="notif-panel">
+      <h3>🔔 Task Reminders</h3>
+      <div id="notif-list"></div>
+      <div class="notif-info">
+        ℹ️ Reminders use your browser's <strong>Web Notifications</strong>. You'll be asked for permission the first time. Notifications fire at the set time — keep this tab open for them to work. Reminders are saved in your browser.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ REPORT ═══ -->
+<div class="tab-pane" id="tab-report">
+  <div class="rpanel">
+    <h2>📊 Habit Log Report</h2>
+    <p class="rsub">Your weekly completions at a glance.</p>
+    <div class="rctrl">
+      <button class="rpb active" data-rp="thisweek">This Week</button>
+      <button class="rpb" data-rp="lastweek">Last Week</button>
+      <button class="rpb" data-rp="4weeks">Last 4 Weeks</button>
+      <select class="rsel" id="r-filter"><option value="all">All Habits</option></select>
+    </div>
+    <div id="r-wrap"></div>
+  </div>
+</div>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div class="tab-pane" id="tab-dash">
+  <div class="dpanel">
+    <h2>🏆 Performance Dashboard</h2>
+    <p class="dsub">Your habit performance at a glance.</p>
+    <div class="dperiods">
+      <button class="dpb active" data-p="week">This Week</button>
+      <button class="dpb" data-p="month">This Month</button>
+      <button class="dpb" data-p="all">All Time</button>
+    </div>
+    <div class="dmgrid" id="d-metrics"></div>
+    <div class="sh"><span>Per Habit</span></div>
+    <div style="overflow-x:auto">
+      <table class="ptbl"><thead><tr><th>Habit</th><th>Goal</th><th class="r">Completion</th><th class="r">Streak</th><th class="r">Grade</th></tr></thead><tbody id="d-tbody"></tbody></table>
+    </div>
+    <div class="hm-sec">
+      <h3>Activity Heatmap — Last 90 Days</h3>
+      <div class="hmg" id="hmg"></div>
+      <div class="hmleg"><span>Less</span><span class="hmls hm0"></span><span class="hmls hm1"></span><span class="hmls hm2"></span><span class="hmls hm3"></span><span class="hmls hm4"></span><span>More</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ JOURNAL ═══ -->
+<div class="tab-pane" id="tab-journal">
+  <div class="bexp" id="bexp"><div id="bexp-in"></div><button class="bcb" id="bcb">← Back to articles</button></div>
+  <div id="blisting">
+    <div class="sh" style="margin-top:4px"><span>Habit Wisdom Journal</span></div>
+    <p style="font-size:.83rem;color:var(--t2);margin-bottom:14px">Personalised insights based on your habits and goals.</p>
+    <div id="jgrid"></div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+<div id="tc"></div>
+
+<!-- EDIT MODALS -->
+<div class="modal-bg" id="edit-habit-modal">
+  <div class="modal">
+    <h3>✏️ Edit Habit</h3>
+    <div class="fg">
+      <div class="fgrp fgf"><label>Habit Name</label><input id="eh-name" type="text" maxlength="60"/></div>
+      <div class="fgrp"><label>Category</label>
+        <select id="eh-cat"><option value="Health">💪 Health &amp; Fitness</option><option value="Nutrition">🥗 Nutrition</option><option value="Mindfulness">🧘 Mindfulness</option><option value="Productivity">📚 Productivity</option><option value="Wellbeing">😴 Wellbeing</option><option value="Finance">💰 Finance</option><option value="Digital">📵 Digital Wellness</option><option value="Custom">⭐ Custom</option></select>
+      </div>
+      <div class="fgrp"><label>Emoji</label><input id="eh-emoji" type="text" maxlength="4" style="font-size:1.2rem;text-align:center"/></div>
+      <div class="fgrp" id="eh-tgt-wrap"><label>Target</label><input id="eh-target" type="number" min="0"/></div>
+      <div class="fgrp" id="eh-unit-wrap"><label>Unit</label><input id="eh-unit" type="text" maxlength="20"/></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-save" id="eh-save">Save Changes</button>
+      <button class="btn-cancel" id="eh-cancel">Cancel</button>
+      <button class="btn-cancel" id="eh-delete" style="background:var(--rlt);color:var(--danger);border-color:rgba(192,57,43,.3)">🗑 Delete Habit</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="edit-goal-modal">
+  <div class="modal">
+    <h3>✏️ Edit Goal</h3>
+    <div class="fg">
+      <div class="fgrp fgf"><label>Goal Title</label><input id="eg-title" type="text" maxlength="60"/></div>
+      <div class="fgrp"><label>Emoji</label><input id="eg-emoji" type="text" maxlength="4" style="font-size:1.2rem;text-align:center"/></div>
+      <div class="fgrp"><label>Category</label><select id="eg-cat"><option value="Work">💼 Work</option><option value="Personal">🙋 Personal</option><option value="Health">💪 Health</option><option value="Finance">💰 Finance</option><option value="Learning">📚 Learning</option><option value="Home">🏠 Home</option></select></div>
+      <div class="fgrp"><label>Target Date</label><input id="eg-date" type="date"/></div>
+      <div class="fgrp"><label>Color</label><select id="eg-color"><option value="#c17b3f">🟠 Amber</option><option value="#4a7c6f">🟢 Sage</option><option value="#3a6abf">🔵 Blue</option><option value="#7c5cbf">🟣 Purple</option><option value="#d4a853">🟡 Gold</option></select></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-save" id="eg-save">Save Changes</button>
+      <button class="btn-cancel" id="eg-cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="edit-task-modal">
+  <div class="modal">
+    <h3>✏️ Edit Task</h3>
+    <div class="fg">
+      <div class="fgrp fgf"><label>Task Title</label><input id="et-title" type="text" maxlength="80"/></div>
+      <div class="fgrp"><label>Priority</label><select id="et-pri"><option value="med">🟡 Medium</option><option value="high">🔴 High</option><option value="low">🟢 Low</option></select></div>
+      <div class="fgrp"><label>Category</label><select id="et-cat"><option value="">None</option><option value="Work">💼 Work</option><option value="Personal">🙋 Personal</option><option value="Health">💪 Health</option><option value="Finance">💰 Finance</option><option value="Learning">📚 Learning</option><option value="Home">🏠 Home</option></select></div>
+      <div class="fgrp"><label>Link to Goal</label><select id="et-goal"></select></div>
+      <div class="fgrp"><label>Due Date</label><input id="et-due" type="date"/></div>
+      <div class="fgrp fgf"><label>Note</label><textarea id="et-note" rows="2" placeholder="Optional note…"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-save" id="et-save">Save Changes</button>
+      <button class="btn-cancel" id="et-cancel">Cancel</button>
+      <button class="btn-cancel" id="et-delete" style="background:var(--rlt);color:var(--danger);border-color:rgba(192,57,43,.3)">🗑 Delete Task</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════
+// BLOG / JOURNAL DATA
+// ══════════════════════════════════════════════════════════════════════
+const BLOG_BASE = [
+  {id:'b1',emoji:'🧠',bg:'linear-gradient(135deg,#e8f0fa,#d5e8f5)',pill:'Science',pc:'#3a7a8c',pb:'#e5f3f7',tags:['any'],
+   source:'European Journal of Social Psychology',url:'https://onlinelibrary.wiley.com/doi/abs/10.1002/ejsp.674',
+   title:'The 21-Day Myth: How Long Does a Habit Actually Take?',
+   exc:'Science says habit formation takes 66 days on average — and missing one day doesn\'t break your streak.',
+   rt:'4 min',date:'Mar 2025',
+   content:`
+    <p>You've heard it a thousand times: it takes 21 days to form a habit. The idea is so pervasive that it's treated as scientific fact. It isn't. Here's where it actually came from — and what the real science says.</p>
+    <h3>The Origin of the Myth</h3>
+    <p>In the 1960s, a plastic surgeon named Dr Maxwell Maltz noticed that his patients took roughly 21 days to adjust to their new appearance after surgery. He wrote about this in his book <em>Psycho-Cybernetics</em>, noting it took "a minimum of about 21 days" to change a mental image. Somewhere along the way, "a minimum of about" got dropped, and "21 days to form any habit" became gospel.</p>
+    <h3>What the Research Actually Shows</h3>
+    <p>In 2010, Phillippa Lally and colleagues at University College London published the most rigorous study on habit formation to date. They tracked 96 people over 12 weeks as each tried to build a single new habit — drinking water at lunch, eating a piece of fruit, or going for a walk before dinner.</p>
+    <p>The result? It took <strong>an average of 66 days</strong> for a new behaviour to become automatic. But the range was enormous: some habits formed in as few as 18 days, others took 254. The complexity of the habit mattered enormously. Simple habits (drink a glass of water after breakfast) form faster. Complex ones (do 50 sit-ups before lunch) take much longer.</p>
+    <h3>The Most Important Finding</h3>
+    <p>Lally's team also found something crucial: <strong>missing one day had virtually no effect on long-term habit formation.</strong> The participants who slipped once or twice and got back on track formed habits just as reliably as those with perfect records. The data showed habit formation as a curve — rapid improvement at first, then a long plateau as the behaviour became increasingly automatic.</p>
+    <div class="tg2">
+      <div class="tc2"><div class="tci">⏱️</div><div class="tct">Be patient</div><div class="tctx">Give yourself at least 8–10 weeks before deciding if a habit has "stuck." Two months is the realistic minimum.</div></div>
+      <div class="tc2"><div class="tci">🔄</div><div class="tct">Missing days are fine</div><div class="tctx">One missed day won't derail you. What matters is getting back on track the next day, not maintaining a perfect streak.</div></div>
+      <div class="tc2"><div class="tci">📏</div><div class="tct">Simpler = faster</div><div class="tctx">The simpler the habit, the faster it forms. Start with the smallest possible version and grow from there.</div></div>
+    </div>
+    <h3>What This Means For Your Practice</h3>
+    <p>When you look at your streak counter in this app, remember: it's a tool for motivation, not a measure of whether your habit is "real." A 3-day streak broken and restarted 20 times still represents 60 days of practice. That's what moves the needle. The identity shift — becoming someone who exercises, someone who reads, someone who tracks their spending — happens through accumulated repetitions, not through unbroken chains.</p>
+    <p>Be patient with yourself. Two months from now, you'll be surprised how automatic the thing you're struggling with today has become.</p>`
+  },
+  {id:'b2',emoji:'🔗',bg:'linear-gradient(135deg,#f5ebe0,#fdf6e7)',pill:'Strategy',pc:'#9a5e28',pb:'#f5ebe0',tags:['any'],
+   source:'BJ Fogg · tinyhabits.com',url:'https://www.tinyhabits.com/book',
+   title:'Habit Stacking: The Smartest Way to Build New Behaviours',
+   exc:'BJ Fogg\'s deceptively simple formula makes new habits almost impossible to forget by anchoring them to existing ones.',
+   rt:'4 min',date:'Feb 2025',
+   content:`
+    <p>The biggest challenge with building new habits isn't motivation — it's remembering to do them. You intend to meditate every morning. You mean to take your vitamins. You want to write in your journal. And then life happens, and somehow it's 11pm and you've forgotten all of it.</p>
+    <p>BJ Fogg, a behaviour scientist at Stanford, spent decades studying why habits succeed and fail. His answer to the forgetting problem is elegant: don't try to remember. Instead, <strong>attach your new behaviour to something you already do automatically.</strong></p>
+    <h3>The Formula</h3>
+    <p>Fogg calls this "habit stacking" or anchoring. The formula is: <strong>"After/Before [EXISTING HABIT], I will [NEW HABIT]."</strong> The existing habit acts as a cue — it fires automatically, and your new habit rides in behind it.</p>
+    <div class="tg2">
+      <div class="tc2"><div class="tci">☕</div><div class="tct">Coffee anchor</div><div class="tctx">"After I pour my morning coffee, I will write three sentences in my journal." The coffee ritual is rock solid — now your journaling is too.</div></div>
+      <div class="tc2"><div class="tci">🦷</div><div class="tct">Brush anchor</div><div class="tctx">"While I brush my teeth, I will think of one thing I'm grateful for." Two minutes, zero extra time.</div></div>
+      <div class="tc2"><div class="tci">🚪</div><div class="tct">Door anchor</div><div class="tctx">"When I sit down at my desk to start work, I will first write today's three priorities." The act of sitting down triggers the planning.</div></div>
+      <div class="tc2"><div class="tci">🛌</div><div class="tct">Bed anchor</div><div class="tctx">"After I get into bed, I will read for ten minutes." No phone — just the book that's already on your nightstand.</div></div>
+    </div>
+    <h3>Why It Works</h3>
+    <p>Existing habits are deeply grooved neural pathways. Your brain executes them without conscious thought. By attaching a new behaviour to that pathway, you leverage decades of automatic repetition as the cue for something new. You don't need willpower or a reminder — the old habit does the prompting.</p>
+    <h3>How to Choose Your Anchor</h3>
+    <p>The best anchors are: daily (they happen every single day without fail), time-specific (they happen at roughly the same time), and contextually linked to the new habit (coffee → writing makes more sense than coffee → exercise). Fogg recommends writing out your stack as a "recipe": Anchor → New Behaviour → Celebration.</p>
+    <p>The celebration part is important. After doing your new habit, do something that makes you feel good — a fist pump, a genuine smile, a quiet "yes." This positive feeling is what wires the behaviour into your brain as something worth repeating.</p>`
+  },
+  {id:'b3',emoji:'📊',bg:'linear-gradient(135deg,#e6f0ee,#d8eee8)',pill:'Insight',pc:'#4a7c6f',pb:'#e6f0ee',tags:['any'],
+   source:'Psychology Today',url:'https://www.psychologytoday.com/us/blog/parenting-from-a-neuroscience-perspective/202512/the-science-behind-habit-tracking',
+   title:'Why Tracking Changes Everything',
+   exc:'In 1997, simply asking people to record whether they flossed doubled their flossing frequency. The Hawthorne Effect is your secret weapon.',
+   rt:'5 min',date:'Jan 2025',
+   content:`
+    <p>There's a peculiar phenomenon in behaviour science: the act of being observed — even by yourself — changes what you do. This is known as the Hawthorne Effect, named after a 1920s factory study that found worker productivity increased simply because researchers were watching.</p>
+    <p>For habit formation, this is extraordinarily good news. It means that the simple act of tracking a behaviour — writing it down, checking a box, logging a number — makes you more likely to do it and do it better.</p>
+    <h3>The Flossing Study</h3>
+    <p>In 1997, researchers ran a deceptively simple experiment. One group was asked to floss daily. Another was asked to floss daily <em>and</em> record whether they had done so each day. The tracking group flossed at twice the rate of the non-tracking group. No reward. No accountability partner. Just the act of recording.</p>
+    <h3>Three Reasons Tracking Works</h3>
+    <p><strong>1. It creates a feedback loop.</strong> Without data, you're estimating. You might think you exercise three times a week when you actually average 1.4. You might believe your spending is under control when the numbers tell a different story. Tracking makes the invisible visible and gives you accurate information to act on.</p>
+    <p><strong>2. It reinforces identity.</strong> Every time you log a completed habit, you cast a vote for the person you want to become. Over hundreds of entries, these votes accumulate into genuine belief: "I am someone who does this." This identity shift is more durable than motivation, which fluctuates. Identity is stable.</p>
+    <p><strong>3. It maintains momentum through streaks.</strong> Seeing a visual record of consecutive days creates what behavioural economists call "loss aversion" — you don't want to break the chain. This isn't a trick; it's a feature. Use it.</p>
+    <div class="tg2">
+      <div class="tc2"><div class="tci">🎯</div><div class="tct">The 1% rule</div><div class="tctx">Improve 1% each week. After 52 weeks, you're 68% better. Compounding is real, and tracking is how you measure it.</div></div>
+      <div class="tc2"><div class="tci">📅</div><div class="tct">Weekly review</div><div class="tctx">Every Sunday, open your report tab. Look at which habits have high rates and which are struggling. Ask why — and adjust.</div></div>
+      <div class="tc2"><div class="tci">📉</div><div class="tct">Track the misses too</div><div class="tctx">A missed day is data. Note what was different about that day. Travel? Stress? Late night? That's your trigger to plan around.</div></div>
+    </div>
+    <h3>What to Track and What Not To</h3>
+    <p>Track what you can control (behaviours), not just what you want (outcomes). "Exercise 30 minutes" is trackable. "Lose 5kg this month" is an outcome that depends on more than your behaviour. Focus your tracking on the process, and the outcomes tend to follow.</p>`
+  },
+  {id:'b4',emoji:'💤',bg:'linear-gradient(135deg,#ede9ff,#e0d9ff)',pill:'Wellbeing',pc:'#5a4da0',pb:'#ede9ff',tags:['Wellbeing','Health'],
+   source:'Matthew Walker · sleepfoundation.org',url:'https://www.sleepfoundation.org/how-sleep-works/why-do-we-need-sleep',
+   title:'Rest Is a Habit Too: The Underrated Art of Recovery',
+   exc:'The most disciplined people schedule their rest as deliberately as their work. Here\'s the neuroscience behind why recovery is non-negotiable.',
+   rt:'4 min',date:'Dec 2024',
+   content:`
+    <p>We celebrate the grind. Hustle culture has made busyness a badge of honour and rest a sign of weakness. But neuroscience tells a very different story — one where deliberate rest is not the opposite of discipline, but a <em>component</em> of it.</p>
+    <h3>What Sleep Actually Does to Habits</h3>
+    <p>Matthew Walker, neuroscientist and author of <em>Why We Sleep</em>, describes sleep as the brain's maintenance window. During sleep — specifically during the slow-wave and REM stages — the brain replays and cements the day's learning. New habits are literally wired in during sleep. Miss sleep, and the habit you practised yesterday is only partially encoded.</p>
+    <p>Walker's research shows that after 17–19 hours without sleep, cognitive performance drops to the equivalent of a blood alcohol level of 0.05%. After 24 hours, it equals 0.1% — legally drunk in most countries. And crucially, people who are sleep-deprived consistently underestimate their own impairment.</p>
+    <h3>Rest Beyond Sleep</h3>
+    <p>Recovery isn't only about sleep. Psychological detachment from work — genuinely not thinking about tasks during downtime — has been shown to restore mental resources and improve next-day performance. This means rest requires intention. Scrolling your phone while technically "off" doesn't count.</p>
+    <div class="tg2">
+      <div class="tc2"><div class="tci">🌙</div><div class="tct">Consistent sleep timing</div><div class="tctx">Going to bed and waking at the same time — even on weekends — is more restorative than sleeping longer but at irregular times. Add it as a habit in this app.</div></div>
+      <div class="tc2"><div class="tci">📵</div><div class="tct">90-minute wind-down</div><div class="tctx">The hour and a half before bed sets up sleep quality. Dim lights, no screens, cool room. Track "no phone after 9pm" as a Digital Wellness habit.</div></div>
+      <div class="tc2"><div class="tci">🧘</div><div class="tct">Non-sleep deep rest</div><div class="tctx">A 20-minute "NSDR" — lying still with eyes closed, body scan or body awareness — has been shown to restore focus and reduce cortisol. No sleep required.</div></div>
+    </div>
+    <h3>The Paradox of Rest</h3>
+    <p>The people who most resist scheduling rest are usually the ones who need it most. High performers in sport, business, and creative fields have this in common: they are as deliberate about their recovery as their training. The recovery IS the training. The rest IS the work. Schedule it. Track it. Protect it.</p>`
+  },
+  {id:'b5',emoji:'💰',bg:'linear-gradient(135deg,#fdf6e7,#fdf0d5)',pill:'Finance',pc:'#8a6010',pb:'#fdf6e7',tags:['Finance'],
+   source:'NerdWallet',url:'https://www.nerdwallet.com/finance/learn/how-to-budget',
+   title:'Track Your Spending Like a Habit',
+   exc:'The most powerful financial habit isn\'t saving more — it\'s looking at your money every single day. Here\'s how to make it automatic.',
+   rt:'4 min',date:'Nov 2024',
+   content:`
+    <p>Most people review their finances once a month — usually when the credit card statement arrives, or when they're already anxious about something. By then, the decisions that created the problem are weeks old. You can't course-correct in real time if you only look at the instruments once a month.</p>
+    <h3>The Daily Money Check-In</h3>
+    <p>The single most impactful financial habit most people can build is also the simplest: <strong>look at your money every day.</strong> Not to obsess. Not to stress. Just to be aware. A daily check-in that takes 60 seconds creates a feedback loop that catches drift before it compounds.</p>
+    <p>This is exactly why the <strong>≤ (at most) operator</strong> exists in this tracker. Add a "Daily spending" habit, set your target (say, $100 or $50), and each evening log what you actually spent. The act of logging — just like the flossing study — makes you more likely to spend mindfully throughout the day.</p>
+    <h3>Why Monthly Budgeting Alone Fails</h3>
+    <p>Monthly budgeting reviews are like checking your rearview mirror once a month while driving. By the time you see that you overspent on dining out, you've already had 15 meals out. Daily awareness catches the third meal out before it becomes the fifteenth.</p>
+    <div class="tg2">
+      <div class="tc2"><div class="tci">📲</div><div class="tct">The evening ritual</div><div class="tctx">Every evening after dinner, open this app and log today's spending total. Anchor it to clearing the dishes or making tea — something you already do.</div></div>
+      <div class="tc2"><div class="tci">🎯</div><div class="tct">Set the limit right</div><div class="tctx">Use the ≤ operator. Your goal is to <em>stay under</em> your number — not hit it exactly. Give yourself margin for unexpected days.</div></div>
+      <div class="tc2"><div class="tci">📈</div><div class="tct">Watch the weekly trend</div><div class="tctx">The Report tab shows your hit/miss rate for the week. Three green days tells you more than the total number.</div></div>
+    </div>
+    <h3>The Compound Effect of Awareness</h3>
+    <p>Morgan Housel, author of <em>The Psychology of Money</em>, argues that financial success is less about knowing what to do and more about consistently <em>behaving</em> well over long periods. Behaviour requires awareness. Awareness requires a system. This app is your system. Use it every day, and watch how the cumulative effect of small, conscious choices adds up to financial stability you couldn't engineer with willpower alone.</p>`
+  },
+  {id:'b6',emoji:'🌱',bg:'linear-gradient(135deg,#e6f0ee,#eaf5f0)',pill:'Mindset',pc:'#4a7c6f',pb:'#e6f0ee',tags:['any'],
+   source:'James Clear · jamesclear.com',url:'https://jamesclear.com/identity-based-habits',
+   title:'Identity-Based Habits: Stop Setting Goals, Start Being Someone',
+   exc:'James Clear\'s most powerful insight: the goal isn\'t to read a book, it\'s to become a reader. Here\'s how to reframe everything.',
+   rt:'5 min',date:'Oct 2024',
+   content:`
+    <p>Most people approach habits through outcomes: "I want to lose 10 kilograms." "I want to run a marathon." "I want to save $20,000." These are outcome-based goals, and there's nothing wrong with having them. The problem is using them as the foundation of your habit practice. Outcomes are achieved and then abandoned. A deeper foundation is needed.</p>
+    <h3>The Identity Shift</h3>
+    <p>James Clear, in <em>Atomic Habits</em>, argues that the most durable habits are rooted not in outcomes but in <strong>identity</strong>. The question isn't "What do I want to achieve?" but "Who do I want to become?" Not "I want to read more books" but "I am a reader." Not "I want to exercise" but "I am someone who moves their body every day."</p>
+    <p>This reframe changes everything. A person who wants to lose weight might skip the gym when they're tired. A person who identifies as an athlete might go anyway — because that's what athletes do. The identity is self-sustaining in a way that goals are not.</p>
+    <h3>Every Habit Is a Vote</h3>
+    <p>Clear's framework is built around the idea of votes. Every time you complete a habit, you cast a vote for the person you want to become. Miss a day? That's one vote the other way. But identities aren't decided by a single vote — they're decided by the accumulated weight of thousands of them. Two steps forward, one step back is still net positive.</p>
+    <div class="tg2">
+      <div class="tc2"><div class="tci">🔁</div><div class="tct">Recast each habit</div><div class="tctx">"Drink 8 glasses of water" → "I'm someone who takes care of their body." Every log is proof of that identity.</div></div>
+      <div class="tc2"><div class="tci">🗳️</div><div class="tct">Focus on votes, not outcomes</div><div class="tctx">Did you show up today? That's a vote. That's what matters. The outcome is downstream of enough votes.</div></div>
+      <div class="tc2"><div class="tci">✍️</div><div class="tct">Use the notes field</div><div class="tctx">After completing a habit, write one sentence: "A healthy person showed up today." or "I proved again that I'm a saver." Identity reinforcement in writing is powerful.</div></div>
+    </div>
+    <h3>How to Apply This Right Now</h3>
+    <p>Look at your current habits. For each one, write down the identity statement it represents. "Run 3×/week" → "I am an active person." "No spending over $80/day" → "I am financially disciplined." Now, when motivation dips — and it will — you have something more durable to draw on than desire. You have identity. And nobody wants to betray who they are.</p>`
+  },
+  {id:'b7',emoji:'🏋️',bg:'linear-gradient(135deg,#fff0e8,#ffe8d5)',pill:'Fitness',pc:'#c17b3f',pb:'#fff0e8',tags:['Health','Nutrition'],
+   source:'PubMed · NIH',url:'https://pubmed.ncbi.nlm.nih.gov/25851609/',
+   title:'The Science of Exercise Habits: Start Smaller Than You Think',
+   exc:'Why starting with just 2 minutes is dramatically more effective than 30-minute goals — and what the research says about minimum effective doses.',
+   rt:'4 min',date:'Sep 2024',
+   content:`
+    <p>The most common failure mode for exercise habits is starting too ambitiously. You commit to 45-minute gym sessions, five days a week. For two weeks it works. Then life intervenes — a late night, a stressful day, travel — and missing one session feels like the whole plan has failed. It hasn't. But the bar was set so high that any obstacle becomes an excuse to quit.</p>
+    <h3>The 2-Minute Rule</h3>
+    <p>James Clear's 2-Minute Rule states that any habit should be scalable down to something that takes two minutes or less. The point isn't to do 2 minutes of exercise forever — it's to make starting so trivially easy that there's no excuse not to. Put on your workout clothes. Walk to the gym. Do two minutes of stretching. Once you've started, momentum usually carries you further.</p>
+    <p>The research supports this. A 2019 study in the <em>British Journal of Sports Medicine</em> found that even 10 minutes of vigorous activity per week reduces cardiovascular mortality risk. The minimum effective dose for health benefits is lower than most people believe. Start there, and build.</p>
+    <h3>Frequency Over Duration</h3>
+    <p>The neuroscience of habit formation is clear: frequency matters more than duration for building automaticity. Going for a 20-minute walk every day will build the exercise habit faster than one 2-hour gym session per week. The brain needs repeated activation of the behaviour loop — cue, routine, reward — to wire the habit in. More repetitions beats longer sessions.</p>
+    <div class="tg2">
+      <div class="tc2"><div class="tci">⏱️</div><div class="tct">The 2-minute start</div><div class="tctx">Commit only to putting on your shoes and starting. Give yourself permission to stop after 2 minutes. You almost never will.</div></div>
+      <div class="tc2"><div class="tci">📈</div><div class="tct">Add 10% per week</div><div class="tctx">Once your habit is consistent, increase duration or intensity by 10% per week. This prevents the overreach that causes most people to quit.</div></div>
+      <div class="tc2"><div class="tci">🔁</div><div class="tct">Never miss twice</div><div class="tctx">Missing once is an accident. Missing twice is starting a new (bad) habit. The rule isn't "never miss" — it's "never miss twice in a row."</div></div>
+    </div>`
+  },
+  {id:'b8',emoji:'🎯',bg:'linear-gradient(135deg,#e8eefa,#d8e4f8)',pill:'Goals',pc:'#3a6abf',pb:'#e8eefa',tags:['any'],
+   source:'James Clear · Atomic Habits',url:'https://jamesclear.com/goals-systems',
+   title:'Goals vs Systems: Why Goals Alone Always Fail',
+   exc:'Every Olympic athlete who wins had the same goal as every athlete who lost. Goals don\'t separate winners from losers — systems do.',
+   rt:'5 min',date:'Aug 2024',
+   content:`
+    <p>Here's an uncomfortable truth: every person who failed to lose weight this year had a goal to lose weight. Every person who failed to save money had a goal to save money. Goals are universal. Results are not. What separates them?</p>
+    <h3>The Problem With Goals</h3>
+    <p>Goals create a "yo-yo" problem. You work toward the goal. You hit it (or don't). Either way, the structure that drove you disappears. People who diet to lose 10kg often regain it because the diet was the goal — not building a sustainable relationship with food. The goal was the ceiling, not the foundation.</p>
+    <p>James Clear puts it bluntly: "You do not rise to the level of your goals. You fall to the level of your systems." Goals are useful for setting direction. Systems are what actually produce results.</p>
+    <h3>What a System Looks Like</h3>
+    <p>A system is a set of daily behaviours that, compounded over time, produce outcomes as a side effect. Instead of "I want to write a book" (goal), the system is "I write 300 words every morning before I check my phone" (behaviour). The book emerges from the system. The system doesn't require the book to have meaning — it has meaning every single day.</p>
+    <div class="tg2">
+      <div class="tc2"><div class="tci">🗺️</div><div class="tct">Goals set direction</div><div class="tctx">Keep your goals on the Goals tab. They tell you which direction to face. But spend 95% of your energy on the daily habits that move you there.</div></div>
+      <div class="tc2"><div class="tci">🔗</div><div class="tct">Link tasks to goals</div><div class="tctx">Every goal should have linked daily habits and weekly tasks. If a goal has no linked behaviours, it's a wish, not a plan.</div></div>
+      <div class="tc2"><div class="tci">📊</div><div class="tct">Measure the system</div><div class="tctx">Your habit completion rate IS your goal progress metric. 80% completion over 90 days produces outcomes. 30% produces excuses.</div></div>
+    </div>
+    <h3>How to Use This App as a System</h3>
+    <p>Add your big goals to the Goals tab. Then ask: what daily habit, done consistently, would make this goal inevitable? Add that habit. Link tasks to the goal. Every week, check whether your habits are generating momentum. This is the system. Show up for the system, and the goals take care of themselves.</p>`
+  },
+  {id:'b9',emoji:'🧘',bg:'linear-gradient(135deg,#ede9ff,#e5e0f8)',pill:'Mindfulness',pc:'#5a4da0',pb:'#ede9ff',tags:['Mindfulness','Wellbeing'],
+   source:'Harvard Health Publishing',url:'https://www.health.harvard.edu/blog/mindfulness-meditation-may-ease-anxiety-mental-stress-201401086967',
+   title:'Building a Mindfulness Practice That Actually Sticks',
+   exc:'Most meditation habits fail in week 2. Here\'s the counter-intuitive reason why — and the research-backed fix that actually works.',
+   rt:'4 min',date:'Jul 2024',
+   content:`
+    <p>The meditation app industry is worth over $4 billion. Tens of millions of people have downloaded Calm or Headspace. And yet surveys consistently show that fewer than 10% of people who start a meditation practice maintain it for more than 90 days. Why?</p>
+    <h3>The Ambition Trap</h3>
+    <p>Most people begin with sessions that are too long. Inspired by the promised benefits — reduced anxiety, better focus, improved sleep — they start with 20 or 30-minute guided meditations. This works for a week or two. Then it feels like too much. The bar is too high. They quit.</p>
+    <p>Research from Harvard's Sara Lazar found that just <strong>8 minutes of daily mindfulness practice</strong> produces measurable changes in grey matter density in the prefrontal cortex after 8 weeks. The dose required for real benefit is far lower than most people assume. The duration matters less than the consistency.</p>
+    <h3>The Minimum Viable Meditation</h3>
+    <p>Start with 3 minutes. Set a timer. Sit comfortably. Focus on the sensation of breathing — the coolness of air entering, the warmth leaving, the rise and fall of the chest. When your mind wanders (it will, constantly), gently return to the breath without judgment. That wandering and returning IS the practice — it's the mental equivalent of a bicep curl.</p>
+    <div class="tg2">
+      <div class="tc2"><div class="tci">🌬️</div><div class="tct">The coffee anchor</div><div class="tctx">Attach 3 minutes of breathing to your morning coffee. After you pour it, before you drink it, sit and breathe. The coffee will still be there.</div></div>
+      <div class="tc2"><div class="tci">📱</div><div class="tct">The no-phone window</div><div class="tctx">The first 10 minutes of your day without your phone — lying in bed, eyes open, noticing the room — is already a form of mindfulness. Track it.</div></div>
+      <div class="tc2"><div class="tci">🚶</div><div class="tct">Movement mindfulness</div><div class="tctx">A mindful walk counts. Full attention to the sensation of walking — feet, legs, breath, surroundings — is a legitimate practice. No cushion required.</div></div>
+    </div>
+    <h3>What to Expect</h3>
+    <p>The first two weeks feel pointless. Your mind wanders constantly and you wonder if you're doing it wrong. You're not — a wandering mind is a normal mind. Around week three, something shifts. You notice you caught yourself in a spiral of anxious thought earlier than usual. You paused before reacting to something that would normally have triggered you. These are the real benefits of mindfulness: not blissed-out calm, but earlier awareness and greater choice in how you respond to your life.</p>`
+  },
+];
+
+const QUOTES=[
+  {q:'"We are what we repeatedly do. Excellence, then, is not an act, but a habit."',a:'— Aristotle'},
+  {q:'"Motivation is what gets you started. Habit is what keeps you going."',a:'— Jim Ryun'},
+  {q:'"You do not rise to the level of your goals. You fall to the level of your systems."',a:'— James Clear'},
+  {q:'"The secret of your future is hidden in your daily routine."',a:'— Mike Murdock'},
+  {q:'"Small habits don\'t add up, they compound."',a:'— James Clear'},
+  {q:'"First forget inspiration. Habit is more dependable."',a:'— Octavia Butler'},
+  {q:'"Chains of habit are too light to be felt until they are too heavy to be broken."',a:'— Warren Buffett'},
+];
+
+// ══════════════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════════════
+const OL={gte:'≥',lte:'≤',eq:'=',gt:'>',lt:'<'};
+const OH={gte:'Success = value ≥ target',lte:'Success = value ≤ target (e.g. Spend ≤ $100)',eq:'Success = exactly target',gt:'Success = strictly exceeds target',lt:'Success = stays strictly below target'};
+function evalOp(h,v){const t=h.target,op=h.operator||'gte';return op==='gte'?v>=t:op==='lte'?v<=t:op==='eq'?v===t:op==='gt'?v>t:v<t}
+
+const SM=[{t:"Nailed it! 🎯",m:"One more check. You're building something real."},{t:"Keep going! ⚡",m:"Consistency is the secret ingredient."},{t:"Lovely! 🌸",m:"Small wins compound into massive results."},{t:"Locked in 🔒",m:"Your future self is thanking you."},{t:"Well done 🏅",m:"Not everyone shows up every day. You do."}];
+const ADM=[{t:"PERFECT DAY! 🎊",m:"Every single habit done!",c:"tp"},{t:"100% Complete! 🌟",m:"Absolutely unstoppable today!",c:"tp"}];
+const STM={3:{t:"3-Day Streak! 🔥",m:"Three days — momentum building!"},7:{t:"One Week! 🗓️",m:"Seven days. Real habit territory."},14:{t:"Two Weeks! 💎",m:"This is becoming who you are."},30:{t:"30 Days! 🚀",m:"A whole month! Incredible."},100:{t:"100 DAYS! 🏆",m:"Legend status."}};
+
+let habits=JSON.parse(localStorage.getItem('r6_h')||'[]');
+let logs  =JSON.parse(localStorage.getItem('r6_l')||'{}');
+let tasks =JSON.parse(localStorage.getItem('r6_t')||'[]');
+let goals =JSON.parse(localStorage.getItem('r6_g')||'[]');
+let reminders=JSON.parse(localStorage.getItem('r6_r')||'{}'); // {taskId: {time, timer}}
+let curDate=tStr();
+let selEmoji='🎯';
+let pendEmoji='';
+let selOp='lte';
+let dashP='week';
+let tv='goals';
+let addOpen=false;
+let editHabitId=null,editGoalId=null,editTaskId=null;
+
+function tStr(){return new Date().toISOString().slice(0,10)}
+function offDate(b,d){const x=new Date(b+'T12:00:00');x.setDate(x.getDate()+d);return x.toISOString().slice(0,10)}
+function dateLabel(s){const d=new Date(s+'T12:00:00'),b=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});if(s===tStr())return'📅 Today — '+b;const y=new Date();y.setDate(y.getDate()-1);if(s===y.toISOString().slice(0,10))return'⏮ Yesterday — '+b;return b}
+function save(){localStorage.setItem('r6_h',JSON.stringify(habits));localStorage.setItem('r6_l',JSON.stringify(logs))}
+function saveT(){localStorage.setItem('r6_t',JSON.stringify(tasks));localStorage.setItem('r6_g',JSON.stringify(goals))}
+function saveR(){localStorage.setItem('r6_r',JSON.stringify(reminders))}
+
+function gLog(id,d){return(logs[d]&&logs[d][id])||{done:false,value:0,note:''}}
+function sLog(id,d,p){if(!logs[d])logs[d]={};logs[d][id]={...gLog(id,d),...p};save()}
+function isComp(h,d){const l=gLog(h.id,d);if(h.type==='check')return l.done;return evalOp(h,l.value)}
+function freqN(h){if(!h.freq||h.freq==='daily')return null;if(h.freq==='custom')return parseInt(h.freqC)||1;return parseInt(h.freq)||null}
+function weekDays(r){const d=new Date(r+'T12:00:00'),day=d.getDay();const m=new Date(d);m.setDate(d.getDate()-(day===0?6:day-1));return Array.from({length:7},(_,i)=>{const x=new Date(m);x.setDate(m.getDate()+i);return x.toISOString().slice(0,10)})}
+function wkComp(h,r){return weekDays(r).filter(d=>isComp(h,d)).length}
+function fLabel(h){if(!h.freq||h.freq==='daily')return null;const m={'1week':'1×/wk','2week':'2×/wk','3week':'3×/wk','4week':'4×/wk','5week':'5×/wk','custom':(h.freqC||'?')+'×/wk'};return m[h.freq]||null}
+function getStreak(h){let s=0,d=new Date(tStr()+'T12:00:00');while(true){const str=d.toISOString().slice(0,10);if(str<h.createdAt)break;if(isComp(h,str)){s++;d.setDate(d.getDate()-1)}else break}return s}
+function bestStreak(){return habits.length?Math.max(...habits.map(getStreak)):0}
+function getDays(n){const a=[];for(let i=n-1;i>=0;i--){const d=new Date(tStr()+'T12:00:00');d.setDate(d.getDate()-i);a.push(d.toISOString().slice(0,10))}return a}
+
+// ── toast & confetti ──
+function toast({i,t,m,c='ts'}){const el=document.createElement('div');el.className=`toast ${c}`;el.innerHTML=`<span class="ti">${i}</span><div><div class="tt">${t}</div><div class="tm">${m}</div></div>`;document.getElementById('tc').appendChild(el);setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),320)},3600)}
+function burst(x,y,n=16){const cs=['#c17b3f','#d4a853','#4a7c6f','#e07b3f','#8aab9f'];for(let i=0;i<n;i++){const p=document.createElement('div');p.className='cp';p.style.cssText=`left:${x+(Math.random()-.5)*90}px;top:${y}px;background:${cs[Math.floor(Math.random()*cs.length)]};animation-duration:${.65+Math.random()*.55}s;animation-delay:${Math.random()*.16}s;border-radius:${Math.random()>.5?'50%':'3px'}`;document.body.appendChild(p);setTimeout(()=>p.remove(),2100)}}
+
+// ── tabs ──
+document.querySelectorAll('.tab-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');document.getElementById('tab-'+b.dataset.tab).classList.add('active');
+    if(b.dataset.tab==='dash')renderDash();
+    if(b.dataset.tab==='report'){popFilter();renderReport()}
+    if(b.dataset.tab==='journal')renderJournal();
+    if(b.dataset.tab==='tasks'){renderTasks();renderGoals();renderNotifs();}
+  })
+});
+
+// ── date nav ──
+document.getElementById('cur-date').textContent=dateLabel(curDate);
+document.getElementById('btn-prev').addEventListener('click',()=>{curDate=offDate(curDate,-1);document.getElementById('cur-date').textContent=dateLabel(curDate);renderToday()});
+document.getElementById('btn-next').addEventListener('click',()=>{curDate=offDate(curDate,1);document.getElementById('cur-date').textContent=dateLabel(curDate);renderToday()});
+
+// ── quote ──
+(()=>{const q=QUOTES[new Date().getDate()%QUOTES.length];document.getElementById('qt').textContent=q.q;document.getElementById('qa').textContent=q.a})();
+
+// ── collapsible add panel ──
+document.getElementById('add-toggle').addEventListener('click',()=>{
+  addOpen=!addOpen;
+  document.getElementById('add-body').classList.toggle('open',addOpen);
+  document.getElementById('add-chev').classList.toggle('open',addOpen);
+});
+
+// ── habit type toggle ──
+document.getElementById('in-type').addEventListener('change',function(){
+  const q=this.value==='quantity';
+  ['f-target','f-unit','f-op'].forEach(id=>document.getElementById(id).style.display=q?'':'none');
+});
+document.getElementById('in-freq').addEventListener('change',function(){
+  document.getElementById('f-cfreq').style.display=this.value==='custom'?'':'none';
+});
+document.querySelectorAll('.op-b').forEach(b=>{
+  b.addEventListener('click',()=>{document.querySelectorAll('.op-b').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');selOp=b.dataset.op;document.getElementById('op-hint').textContent=OH[selOp]});
+});
+
+// ── emoji ──
+const PRESETS=['🎯','🏃','💧','💊','🧘','📚','😴','🥗','🏋️','🚴','🧠','📵','☀️','🫁','🫀','🦷','✍️','🎸','🌿','🍎','🦋','💪','🎵','🌙','💰','🧹','🏊','🎨'];
+function buildGrid(){
+  const g=document.getElementById('eg');g.innerHTML='';
+  PRESETS.forEach(e=>{const s=document.createElement('span');s.className='e-opt'+(e===selEmoji?' sel':'');s.textContent=e;s.addEventListener('click',()=>{document.querySelectorAll('.e-opt').forEach(x=>x.classList.remove('sel'));s.classList.add('sel');selEmoji=e;pendEmoji='';document.getElementById('epv').textContent='';document.getElementById('esb').textContent='😊';document.getElementById('ec').value=''});g.appendChild(s)});
+}
+buildGrid();
+const ec=document.getElementById('ec'),esb=document.getElementById('esb'),epv=document.getElementById('epv');
+function extractE(s){if(!s)return null;if(typeof Intl!=='undefined'&&Intl.Segmenter){try{const r=[...new Intl.Segmenter(undefined,{granularity:'grapheme'}).segment(s)];if(r.length)return r[0].segment}catch(e){}}const m=s.match(/(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)(\u200D(\p{Emoji_Presentation}|\p{Emoji}\uFE0F))*/u);if(m)return m[0];return[...s][0]||null}
+function setE(raw){const e=extractE(raw);if(!e)return;pendEmoji=e;esb.textContent=e;epv.textContent=e;document.querySelectorAll('.e-opt').forEach(x=>x.classList.remove('sel'));ec.value=''}
+ec.addEventListener('input',()=>setE(ec.value));
+ec.addEventListener('paste',e=>{e.preventDefault();setE((e.clipboardData||window.clipboardData).getData('text'))});
+document.getElementById('bu').addEventListener('click',()=>{if(!pendEmoji){ec.focus();return}selEmoji=pendEmoji;toast({i:selEmoji,t:'Custom emoji set!',m:`Using ${selEmoji}.`,c:'ts'})});
+
+// ── add habit ──
+document.getElementById('btn-add').addEventListener('click',()=>{
+  const inp=document.getElementById('in-name'),name=inp.value.trim();
+  if(!name){inp.style.borderColor='var(--danger)';setTimeout(()=>inp.style.borderColor='',1500);return}
+  const type=document.getElementById('in-type').value,freq=document.getElementById('in-freq').value;
+  habits.push({id:Date.now().toString(),name,emoji:selEmoji,category:document.getElementById('in-cat').value,type,target:parseFloat(document.getElementById('in-target').value)||0,unit:type==='quantity'?(document.getElementById('in-unit').value.trim()||'times'):'',operator:type==='quantity'?selOp:'gte',freq,freqC:document.getElementById('in-cfreq').value||'',createdAt:curDate});
+  save();renderToday();popFilter();
+  inp.value='';document.getElementById('in-target').value='';document.getElementById('in-unit').value='';
+  document.getElementById('in-type').value='check';document.getElementById('in-freq').value='daily';
+  ['f-target','f-unit','f-op','f-cfreq'].forEach(id=>document.getElementById(id).style.display='none');
+  pendEmoji='';epv.textContent='';esb.textContent='😊';ec.value='';selEmoji='🎯';buildGrid();
+  addOpen=false;document.getElementById('add-body').classList.remove('open');document.getElementById('add-chev').classList.remove('open');
+  toast({i:habits[habits.length-1].emoji,t:'Habit added! 🌱',m:`"${name}" is on your list!`,c:'ts'});
+  renderJournalTeaser();
+});
+
+// ══════════════════════════════════════════════════════════════════════
+// RENDER TODAY
+// ══════════════════════════════════════════════════════════════════════
+function renderToday(){renderHabits();renderStats();renderJournalTeaser()}
+
+function makeQtyHTML(h,log){
+  const op=h.operator||'gte',v=log.value,isLim=(op==='lte'||op==='lt'),done=evalOp(h,v);
+  let pct=h.target>0?(isLim?Math.max(0,Math.min(100,Math.round((1-v/h.target)*100))):Math.min(100,Math.round(v/h.target*100))):(v>0?100:0);
+  const barClass=done?'done':(isLim&&v>h.target?'over':'');
+  const smax=h.target>0?(isLim?Math.ceil(h.target*1.5):Math.ceil(h.target*2)):200;
+  let presets=[];
+  if(h.target>0){presets=isLim?[0,Math.round(h.target*.25),Math.round(h.target*.5),Math.round(h.target*.75),h.target]:[0,Math.round(h.target*.25),Math.round(h.target*.5),h.target];presets=[...new Set(presets)].filter(x=>x>=0)}
+  return`
+    <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap"><span class="obadge">${OL[op]||'≥'} ${h.target}${h.unit?' '+h.unit:''}</span></div>
+    <div class="qty-ctrl">
+      <div class="qty-row">
+        <button class="qsb" data-id="${h.id}" data-d="-1">−</button>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center">
+          <input type="number" class="qdi" data-id="${h.id}" value="${v}" min="0" max="${smax}"/>
+          <div class="qul">${h.unit||'units'}</div>
+        </div>
+        <button class="qsb" data-id="${h.id}" data-d="1">+</button>
+      </div>
+      <div class="slw"><span class="slm">0</span><input type="range" class="qsl" data-id="${h.id}" min="0" max="${smax}" step="${smax>50?Math.max(1,Math.round(smax/50)):1}" value="${v}"/><span class="slx">${smax}</span></div>
+      ${presets.length?`<div class="qpr">${presets.map(p=>`<button class="qp" data-val="${p}" data-id="${h.id}">${p}${h.unit?' '+h.unit:''}</button>`).join('')}</div>`:''}
+      <div class="qbar"><div class="qbf ${barClass}" style="width:${pct}%"></div></div>
+    </div>`;
+}
+
+function renderHabits(){
+  const list=document.getElementById('habits-list');
+  if(!habits.length){list.innerHTML=`<div class="empty"><span class="ei">🌱</span><h3>No habits yet</h3><p>Click "Add a New Habit" above!</p></div>`;return}
+  list.innerHTML='';
+  habits.forEach(h=>{
+    const log=gLog(h.id,curDate),done=isComp(h,curDate),streak=getStreak(h);
+    const fn=freqN(h),wk=fn?wkComp(h,curDate):null,fl=fLabel(h);
+    const card=document.createElement('div');card.className='hcard'+(done?' done-c':'');
+    let aHTML=h.type==='check'?`<button class="btn-check${done?' is-done':''}" data-id="${h.id}">${done?'✅ Done — tap to undo':'○ Mark Complete'}</button>`:makeQtyHTML(h,log);
+    let wkHTML=fn?`<div class="wkp"><div class="wkdots">${weekDays(curDate).map(d=>`<span class="wkd${isComp(h,d)?' hit':''}"></span>`).join('')}</div><span class="wklbl">${wk}/${fn} this week</span></div>`:'';
+    card.innerHTML=`
+      <div class="card-actions">
+        <button class="ca-btn edt" data-id="${h.id}" title="Edit">✏️</button>
+        <button class="ca-btn del" data-id="${h.id}" title="Delete">✕</button>
+      </div>
+      <div class="hhead">
+        <div class="h-ebox">${h.emoji}</div>
+        <div class="hbody">
+          <div class="hname">${h.name}</div>
+          <div class="htags">
+            <span class="ctag">${h.category}</span>
+            ${fl?`<span class="ftag">📅 ${fl}</span>`:''}
+            ${streak>0?`<span class="stag${streak>=7?' hot':''}">🔥 ${streak}${fn?'wk':'d'}</span>`:''}
+          </div>
+        </div>
+      </div>
+      ${aHTML}${wkHTML}
+      <textarea class="hnote" data-id="${h.id}" placeholder="Add a note…" rows="2">${log.note||''}</textarea>`;
+    list.appendChild(card);
+  });
+
+  // Delete and edit — no confirm() to avoid iframe sandbox blocking
+  list.querySelectorAll('.ca-btn.del').forEach(btn=>{
+    btn.addEventListener('click',function(e){
+      e.preventDefault();e.stopPropagation();
+      const id=this.dataset.id;
+      const h=habits.find(x=>x.id===id);
+      if(!h)return;
+      habits=habits.filter(x=>x.id!==id);
+      save();renderToday();popFilter();
+      toast({i:'🗑️',t:`"${h.name}" deleted`,m:'Habit removed from your list.',c:'ts'});
+    });
+  });
+
+  list.querySelectorAll('.ca-btn.edt').forEach(btn=>{
+    btn.addEventListener('click',function(e){
+      e.preventDefault();e.stopPropagation();
+      openEditHabit(this.dataset.id);
+    });
+  });
+
+  list.querySelectorAll('.btn-check').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const h=habits.find(x=>x.id===btn.dataset.id);if(!h)return;
+      const l=gLog(h.id,curDate),nd=!l.done;sLog(h.id,curDate,{done:nd});
+      if(nd){const r=btn.getBoundingClientRect();burst(r.left+r.width/2,r.top);const ad=habits.every(x=>x.id===h.id?true:isComp(x,curDate));if(ad&&habits.length>1){setTimeout(()=>{const m=ADM[Math.floor(Math.random()*ADM.length)];toast({i:'🎊',t:m.t,m:m.m,c:m.c});burst(window.innerWidth/2,window.innerHeight/3,28)},380)}else{const m=SM[Math.floor(Math.random()*SM.length)];toast({i:h.emoji,t:m.t,m:m.m})}const ns=getStreak(h)+1;if(STM[ns])setTimeout(()=>toast({i:'🔥',t:STM[ns].t,m:STM[ns].m,c:'tf'}),750)}
+      renderToday();
+    });
+  });
+
+  list.querySelectorAll('.qsb').forEach(b=>{b.addEventListener('click',()=>{const h=habits.find(x=>x.id===b.dataset.id);if(!h)return;applyQty(b.dataset.id,gLog(h.id,curDate).value+parseInt(b.dataset.d))})});
+  list.querySelectorAll('.qdi').forEach(inp=>{inp.addEventListener('change',()=>applyQty(inp.dataset.id,parseFloat(inp.value)||0));inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur()})});
+  list.querySelectorAll('.qsl').forEach(sl=>{
+    sl.addEventListener('input',()=>{
+      const v=parseFloat(sl.value)||0,card=sl.closest('.hcard');
+      const ni=card&&card.querySelector('.qdi');if(ni)ni.value=v;
+      const h=habits.find(x=>x.id===sl.dataset.id);if(!h)return;
+      const op=h.operator||'gte',isLim=(op==='lte'||op==='lt');
+      const pct=h.target>0?(isLim?Math.max(0,Math.min(100,Math.round((1-v/h.target)*100))):Math.min(100,Math.round(v/h.target*100))):(v>0?100:0);
+      const bar=card&&card.querySelector('.qbf');if(bar)bar.style.width=pct+'%';
+    });
+    sl.addEventListener('change',()=>applyQty(sl.dataset.id,parseFloat(sl.value)||0));
+  });
+  list.querySelectorAll('.qp').forEach(b=>{b.addEventListener('click',()=>applyQty(b.dataset.id,parseFloat(b.dataset.val)||0))});
+  list.querySelectorAll('.hnote').forEach(t=>{t.addEventListener('change',()=>sLog(t.dataset.id,curDate,{note:t.value}))});
+}
+
+function applyQty(hId,nv){
+  const h=habits.find(x=>x.id===hId);if(!h)return;
+  const prev=gLog(h.id,curDate).value;nv=Math.max(0,nv);sLog(h.id,curDate,{value:nv});
+  if(evalOp(h,nv)&&!evalOp(h,prev)){burst(window.innerWidth/2,280);const ad=habits.every(x=>x.id===h.id?true:isComp(x,curDate));if(ad&&habits.length>1){setTimeout(()=>{const m=ADM[Math.floor(Math.random()*ADM.length)];toast({i:'🎊',t:m.t,m:m.m,c:m.c})},380)}else{const m=SM[Math.floor(Math.random()*SM.length)];toast({i:h.emoji,t:m.t,m:m.m})}}
+  renderToday();
+}
+
+function renderStats(){
+  const tot=habits.length;
+  // Done Today = habits actually completed on this specific day (ignores weekly freq)
+  const doneToday=habits.filter(h=>isComp(h,curDate)).length;
+  const pct=tot?Math.round(doneToday/tot*100):0;
+  document.getElementById('st-total').textContent=tot;
+  document.getElementById('st-done').textContent=doneToday;
+  document.getElementById('st-str').textContent=bestStreak();
+  document.getElementById('st-pct').textContent=pct+'%';
+  document.getElementById('pf').style.width=pct+'%';
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// EDIT HABIT MODAL
+// ══════════════════════════════════════════════════════════════════════
+function openEditHabit(id){
+  const h=habits.find(x=>x.id===id);if(!h)return;
+  editHabitId=id;
+  document.getElementById('eh-name').value=h.name;
+  document.getElementById('eh-cat').value=h.category;
+  document.getElementById('eh-emoji').value=h.emoji;
+  const isQty=h.type==='quantity';
+  document.getElementById('eh-tgt-wrap').style.display=isQty?'':'none';
+  document.getElementById('eh-unit-wrap').style.display=isQty?'':'none';
+  document.getElementById('eh-target').value=h.target||'';
+  document.getElementById('eh-unit').value=h.unit||'';
+  document.getElementById('edit-habit-modal').classList.add('open');
+}
+document.getElementById('eh-save').addEventListener('click',()=>{
+  const h=habits.find(x=>x.id===editHabitId);if(!h)return;
+  const newEmoji=extractE(document.getElementById('eh-emoji').value)||h.emoji;
+  h.name=document.getElementById('eh-name').value.trim()||h.name;
+  h.category=document.getElementById('eh-cat').value;
+  h.emoji=newEmoji;
+  if(h.type==='quantity'){h.target=parseFloat(document.getElementById('eh-target').value)||h.target;h.unit=document.getElementById('eh-unit').value.trim()||h.unit}
+  save();document.getElementById('edit-habit-modal').classList.remove('open');renderToday();
+  toast({i:h.emoji,t:'Habit updated!',m:`"${h.name}" saved.`,c:'ts'});
+});
+document.getElementById('eh-cancel').addEventListener('click',()=>document.getElementById('edit-habit-modal').classList.remove('open'));
+document.getElementById('eh-delete').addEventListener('click',()=>{
+  const h=habits.find(x=>x.id===editHabitId);if(!h)return;
+  habits=habits.filter(x=>x.id!==editHabitId);
+  save();document.getElementById('edit-habit-modal').classList.remove('open');renderToday();popFilter();
+  toast({i:'🗑️',t:`"${h.name}" deleted`,m:'Habit removed from your list.',c:'ts'});
+});
+document.getElementById('edit-habit-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('open')});
+
+// ══════════════════════════════════════════════════════════════════════
+// TASKS
+// ══════════════════════════════════════════════════════════════════════
+document.querySelectorAll('.vb').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.vb').forEach(x=>x.classList.remove('active'));b.classList.add('active');tv=b.dataset.v;
+    ['list','goals','kanban','notif'].forEach(v=>document.getElementById('v-'+v).style.display=tv===v?'':'none');
+    if(tv==='kanban')renderKanban();
+    if(tv==='goals')renderGoals();
+    if(tv==='notif')renderNotifs();
+  });
+});
+
+function addTask(){
+  const inp=document.getElementById('t-in'),title=inp.value.trim();if(!title)return;
+  tasks.push({id:Date.now().toString(),title,priority:document.getElementById('t-pri').value,category:document.getElementById('t-cat').value,goalId:document.getElementById('t-goal-sel').value,due:document.getElementById('t-due').value,done:false,createdAt:tStr(),note:''});
+  saveT();inp.value='';renderTasks();renderGoals();renderTStats();renderNotifs();
+  toast({i:'📌',t:'Task added!',m:`"${title}" is on your list.`,c:'ts'});
+}
+document.getElementById('btn-at').addEventListener('click',addTask);
+document.getElementById('t-in').addEventListener('keydown',e=>{if(e.key==='Enter')addTask()});
+
+function popGoalSel(selId='t-goal-sel'){
+  const sel=document.getElementById(selId);if(!sel)return;
+  sel.innerHTML='<option value="">Link Goal</option>';
+  goals.forEach(g=>{const o=document.createElement('option');o.value=g.id;o.textContent=`${g.emoji} ${g.title}`;sel.appendChild(o)});
+}
+
+function renderTStats(){
+  const today=tStr();
+  document.getElementById('ts-tot').textContent=tasks.length;
+  document.getElementById('ts-done').textContent=tasks.filter(t=>t.done).length;
+  document.getElementById('ts-ov').textContent=tasks.filter(t=>!t.done&&t.due&&t.due<today).length;
+}
+
+function renderTasks(){
+  renderTStats();popGoalSel();
+  const wrap=document.getElementById('tgl');
+  if(!tasks.length){wrap.innerHTML=`<div class="empty"><span class="ei">📌</span><h3>No tasks yet</h3><p>Add your first task above!</p></div>`;return}
+  const today=tStr();
+  const groups=[
+    {key:'ov',label:'Overdue',col:'var(--danger)',items:tasks.filter(t=>!t.done&&t.due&&t.due<today)},
+    {key:'td',label:'Due Today',col:'var(--primary)',items:tasks.filter(t=>!t.done&&t.due===today)},
+    {key:'up',label:'Upcoming',col:'var(--accent)',items:tasks.filter(t=>!t.done&&(!t.due||t.due>today))},
+    {key:'dn',label:'Completed',col:'var(--t2)',items:tasks.filter(t=>t.done)},
+  ];
+  wrap.innerHTML='';
+  groups.forEach(g=>{
+    if(!g.items.length)return;
+    const grp=document.createElement('div');grp.className='tgrp';
+    grp.innerHTML=`<div class="tgh"><span class="tgt" style="color:${g.col}">${g.label}</span><span class="tgc">${g.items.length}</span></div>`;
+    g.items.forEach(t=>grp.appendChild(makeTaskCard(t)));
+    wrap.appendChild(grp);
+  });
+}
+
+const priMap={high:'ph',med:'pm',low:'pl'};
+const priLbl={high:'🔴 High',med:'🟡 Medium',low:'🟢 Low'};
+
+function makeTaskCard(t){
+  const today=tStr();
+  const card=document.createElement('div');card.className='tcard'+(t.done?' tdone':'');
+  const lg=goals.find(g=>g.id===t.goalId);
+  let dH='';
+  if(t.due){const cls=t.due<today?'ov':t.due===today?'td':'';const lbl=t.due<today?`Overdue (${t.due})`:t.due===today?'Due Today':`Due ${t.due}`;dH=`<span class="tdue ${cls}">📅 ${lbl}</span>`}
+  card.innerHTML=`
+    <div class="tchk${t.done?' ck':''}" data-id="${t.id}"></div>
+    <div class="tbody">
+      <div class="ttitle">${t.title}</div>
+      <div class="tmrow">
+        <span class="ttag ${priMap[t.priority]||'pm'}">${priLbl[t.priority]||'Medium'}</span>
+        ${t.category?`<span class="ttag ptc">${t.category}</span>`:''}
+        ${lg?`<span class="ttag pgl">🎯 ${lg.title}</span>`:''}
+        ${dH}
+      </div>
+      ${t.note?`<div style="font-size:.73rem;color:var(--t2);margin-top:3px">${t.note}</div>`:''}
+    </div>
+    <div class="tact">
+      <button class="tab edt" data-id="${t.id}" title="Edit">✏️</button>
+      <button class="tab del" data-id="${t.id}" title="Delete">🗑</button>
+    </div>`;
+
+  // Delete and edit — no confirm() to avoid iframe sandbox blocking
+  card.querySelector('.tchk').addEventListener('click',function(){
+    const task=tasks.find(x=>x.id===this.dataset.id);if(!task)return;
+    task.done=!task.done;saveT();renderTasks();renderGoals();renderTStats();
+    if(task.done)toast({i:'✅',t:'Task done!',m:`"${task.title}" complete!`,c:'ts'});
+  });
+  card.querySelector('.tab.del').addEventListener('click',function(e){
+    e.preventDefault();e.stopPropagation();
+    const id=this.dataset.id;
+    const task=tasks.find(x=>x.id===id);
+    if(!task)return;
+    tasks=tasks.filter(x=>x.id!==id);saveT();renderTasks();renderGoals();renderTStats();renderNotifs();
+    toast({i:'🗑️',t:`"${task.title}" deleted`,m:'Task removed.',c:'ts'});
+  });
+  card.querySelector('.tab.edt').addEventListener('click',function(e){
+    e.preventDefault();e.stopPropagation();openEditTask(this.dataset.id);
+  });
+  return card;
+}
+
+// ── Edit task modal ──
+function openEditTask(id){
+  const t=tasks.find(x=>x.id===id);if(!t)return;
+  editTaskId=id;
+  document.getElementById('et-title').value=t.title;
+  document.getElementById('et-pri').value=t.priority||'med';
+  document.getElementById('et-cat').value=t.category||'';
+  document.getElementById('et-due').value=t.due||'';
+  document.getElementById('et-note').value=t.note||'';
+  // populate goal select
+  const gs=document.getElementById('et-goal');gs.innerHTML='<option value="">No Goal</option>';
+  goals.forEach(g=>{const o=document.createElement('option');o.value=g.id;o.textContent=`${g.emoji} ${g.title}`;if(t.goalId===g.id)o.selected=true;gs.appendChild(o)});
+  document.getElementById('edit-task-modal').classList.add('open');
+}
+document.getElementById('et-save').addEventListener('click',()=>{
+  const t=tasks.find(x=>x.id===editTaskId);if(!t)return;
+  t.title=document.getElementById('et-title').value.trim()||t.title;
+  t.priority=document.getElementById('et-pri').value;
+  t.category=document.getElementById('et-cat').value;
+  t.goalId=document.getElementById('et-goal').value;
+  t.due=document.getElementById('et-due').value;
+  t.note=document.getElementById('et-note').value;
+  saveT();document.getElementById('edit-task-modal').classList.remove('open');renderTasks();renderGoals();
+  toast({i:'✏️',t:'Task updated!',m:`"${t.title}" saved.`,c:'ts'});
+});
+document.getElementById('et-cancel').addEventListener('click',()=>document.getElementById('edit-task-modal').classList.remove('open'));
+document.getElementById('et-delete').addEventListener('click',()=>{
+  const t=tasks.find(x=>x.id===editTaskId);if(!t)return;
+  tasks=tasks.filter(x=>x.id!==editTaskId);
+  saveT();document.getElementById('edit-task-modal').classList.remove('open');renderTasks();renderGoals();renderTStats();renderNotifs();
+  toast({i:'🗑️',t:`"${t.title}" deleted`,m:'Task removed from your list.',c:'ts'});
+});
+document.getElementById('edit-task-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('open')});
+
+// ══════════════════════════════════════════════════════════════════════
+// GOALS (shown FIRST in goals view, since tasks link to them)
+// ══════════════════════════════════════════════════════════════════════
+document.getElementById('btn-ag').addEventListener('click',()=>{
+  const title=document.getElementById('g-title').value.trim();
+  if(!title){document.getElementById('g-title').style.borderColor='var(--danger)';setTimeout(()=>document.getElementById('g-title').style.borderColor='',1500);return}
+  goals.push({id:Date.now().toString(),title,emoji:document.getElementById('g-emoji').value||'🎯',category:document.getElementById('g-cat').value,deadline:document.getElementById('g-date').value,color:document.getElementById('g-color').value,createdAt:tStr()});
+  saveT();
+  document.getElementById('g-title').value='';document.getElementById('g-emoji').value='';document.getElementById('g-date').value='';
+  renderGoals();popGoalSel();
+  toast({i:'🎯',t:'Goal created!',m:`"${title}" — let's make it happen!`,c:'ts'});
+});
+
+function renderGoals(){
+  popGoalSel();
+  const grid=document.getElementById('goals-grid');if(!grid)return;
+  if(!goals.length){grid.innerHTML=`<div class="empty"><span class="ei">🎯</span><h3>No goals yet</h3><p>Create a goal above, then link tasks to it.</p></div>`;return}
+  grid.innerHTML='';
+  goals.forEach(g=>{
+    const linked=tasks.filter(t=>t.goalId===g.id);
+    const done=linked.filter(t=>t.done).length;
+    const pct=linked.length?Math.round(done/linked.length*100):0;
+    const card=document.createElement('div');card.className='gcard';
+    card.innerHTML=`
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${g.color};border-radius:var(--rxl) var(--rxl) 0 0"></div>
+      <div class="gcard-actions">
+        <button class="edt" data-id="${g.id}" title="Edit">✏️</button>
+        <button class="del" data-id="${g.id}" title="Delete">✕</button>
+      </div>
+      <div class="ghead">
+        <span class="gemoji">${g.emoji}</span>
+        <div class="ginfo">
+          <div class="gtitle">${g.title}</div>
+          ${g.deadline?`<div class="gdl">🗓 Target: ${g.deadline}</div>`:''}
+        </div>
+      </div>
+      <div class="gpb"><div class="gpf" style="width:${pct}%;background:${g.color}"></div></div>
+      <div class="gstats"><span class="gtc">${done}/${linked.length} tasks done</span><span class="gpct" style="color:${g.color}">${pct}%</span></div>`;
+
+    card.querySelector('.del').addEventListener('click',e=>{
+      e.preventDefault();e.stopPropagation();
+      tasks.forEach(t=>{if(t.goalId===g.id)t.goalId=''});
+      goals=goals.filter(x=>x.id!==g.id);saveT();renderGoals();renderTasks();
+      toast({i:'🗑️',t:`"${g.title}" deleted`,m:'Goal removed. Linked tasks were unlinked.',c:'ts'});
+    });
+    card.querySelector('.edt').addEventListener('click',e=>{e.stopPropagation();openEditGoal(g.id)});
+    grid.appendChild(card);
+  });
+}
+
+// ── Edit goal modal ──
+function openEditGoal(id){
+  const g=goals.find(x=>x.id===id);if(!g)return;
+  editGoalId=id;
+  document.getElementById('eg-title').value=g.title;
+  document.getElementById('eg-emoji').value=g.emoji;
+  document.getElementById('eg-cat').value=g.category;
+  document.getElementById('eg-date').value=g.deadline||'';
+  document.getElementById('eg-color').value=g.color;
+  document.getElementById('edit-goal-modal').classList.add('open');
+}
+document.getElementById('eg-save').addEventListener('click',()=>{
+  const g=goals.find(x=>x.id===editGoalId);if(!g)return;
+  const ne=extractE(document.getElementById('eg-emoji').value)||g.emoji;
+  g.title=document.getElementById('eg-title').value.trim()||g.title;
+  g.emoji=ne;g.category=document.getElementById('eg-cat').value;
+  g.deadline=document.getElementById('eg-date').value;g.color=document.getElementById('eg-color').value;
+  saveT();document.getElementById('edit-goal-modal').classList.remove('open');renderGoals();
+  toast({i:g.emoji,t:'Goal updated!',m:`"${g.title}" saved.`,c:'ts'});
+});
+document.getElementById('eg-cancel').addEventListener('click',()=>document.getElementById('edit-goal-modal').classList.remove('open'));
+document.getElementById('edit-goal-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('open')});
+
+// ══════════════════════════════════════════════════════════════════════
+// KANBAN
+// ══════════════════════════════════════════════════════════════════════
+function renderKanban(){
+  const wrap=document.getElementById('kw');
+  const today=tStr();
+  function getCol(t){if(t.done)return'done';if(t.due&&t.due<=today)return'prog';return'todo'}
+  const cols=[{k:'todo',l:'To Do',c:'#b0a090'},{k:'prog',l:'In Progress',c:'var(--primary)'},{k:'done',l:'Done',c:'var(--accent)'}];
+  wrap.innerHTML='';
+  cols.forEach(col=>{
+    const items=tasks.filter(t=>getCol(t)===col.k);
+    const div=document.createElement('div');div.className='kcol';
+    div.innerHTML=`<div class="kcolt"><span class="kdot" style="background:${col.c}"></span>${col.l} <span style="font-size:.63rem;color:var(--t3)">(${items.length})</span></div>`;
+    items.forEach(t=>{
+      const c=document.createElement('div');c.className='tcard'+(t.done?' tdone':'');c.style.marginBottom='5px';
+      c.innerHTML=`<div class="tchk${t.done?' ck':''}" data-id="${t.id}"></div><div class="tbody"><div class="ttitle">${t.title}</div><div class="tmrow"><span class="ttag ${priMap[t.priority]||'pm'}">${t.priority}</span>${t.due?`<span class="tdue" style="font-size:.6rem">${t.due}</span>`:''}</div></div>`;
+      c.querySelector('.tchk').addEventListener('click',function(){const task=tasks.find(x=>x.id===this.dataset.id);if(task){task.done=!task.done;saveT();renderKanban();renderTStats()}});
+      div.appendChild(c);
+    });
+    wrap.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// NOTIFICATIONS / REMINDERS
+// ══════════════════════════════════════════════════════════════════════
+function requestNotifPerm(){
+  if(!('Notification' in window))return Promise.resolve('denied');
+  if(Notification.permission==='granted')return Promise.resolve('granted');
+  return Notification.requestPermission();
+}
+
+function scheduleNotif(taskId,timeStr){
+  const t=tasks.find(x=>x.id===taskId);if(!t)return;
+  const [h,m]=timeStr.split(':').map(Number);
+  const now=new Date(),fire=new Date();
+  fire.setHours(h,m,0,0);
+  if(fire<=now)fire.setDate(fire.getDate()+1); // schedule for tomorrow if time passed
+  const ms=fire-now;
+  // Clear existing
+  if(reminders[taskId]&&reminders[taskId].timerId){clearTimeout(reminders[taskId].timerId)}
+  const timerId=setTimeout(()=>{
+    if(Notification.permission==='granted'){
+      new Notification(`Ritual Reminder: ${t.title}`,{body:t.due?`Due: ${t.due}`:'Don\'t forget this task!',icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📋</text></svg>'})
+    }
+    delete reminders[taskId];saveR();renderNotifs();
+  },ms);
+  reminders[taskId]={time:timeStr,timerId,fireAt:fire.toISOString()};saveR();
+}
+
+function renderNotifs(){
+  const wrap=document.getElementById('notif-list');if(!wrap)return;
+  const pending=tasks.filter(t=>!t.done);
+  if(!pending.length){wrap.innerHTML=`<p style="font-size:.82rem;color:var(--t3);padding:8px 0">No pending tasks to remind about.</p>`;return}
+  wrap.innerHTML='';
+  pending.forEach(t=>{
+    const hasRem=!!reminders[t.id];
+    const row=document.createElement('div');row.className='notif-row';
+    row.innerHTML=`
+      <div style="flex:1;min-width:0">
+        <div class="ntask-name">${t.title}</div>
+        ${t.due?`<div class="ntask-due">Due: ${t.due}</div>`:''}
+      </div>
+      <input type="time" class="ntime-sel" data-id="${t.id}" value="${reminders[t.id]?.time||''}" title="Reminder time"/>
+      <button class="nbtn${hasRem?' set':''}" data-id="${t.id}">${hasRem?'✓ Set':'Set'}</button>`;
+    row.querySelector('.nbtn').addEventListener('click',async function(){
+      const timeVal=row.querySelector('.ntime-sel').value;
+      if(!timeVal){toast({i:'⏰',t:'Pick a time',m:'Select a time first.',c:'ts'});return}
+      const perm=await requestNotifPerm();
+      if(perm!=='granted'){toast({i:'🔕',t:'Permission needed',m:'Allow notifications in your browser settings.',c:'ts'});return}
+      scheduleNotif(this.dataset.id,timeVal);
+      renderNotifs();
+      toast({i:'🔔',t:'Reminder set!',m:`You'll be reminded about "${t.title}" at ${timeVal}.`,c:'ts'});
+    });
+    // Cancel reminder
+    if(hasRem){
+      const cancelBtn=document.createElement('button');cancelBtn.className='nbtn';cancelBtn.style.marginLeft='4px';cancelBtn.style.background='var(--rlt)';cancelBtn.style.color='var(--danger)';cancelBtn.style.borderColor='rgba(192,57,43,.3)';cancelBtn.textContent='Cancel';
+      cancelBtn.addEventListener('click',()=>{if(reminders[t.id]?.timerId)clearTimeout(reminders[t.id].timerId);delete reminders[t.id];saveR();renderNotifs()});
+      row.appendChild(cancelBtn);
+    }
+    wrap.appendChild(row);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// DYNAMIC JOURNAL
+// ══════════════════════════════════════════════════════════════════════
+function getRelevantArticles(){
+  const cats=new Set(habits.map(h=>h.category));
+  const gCats=new Set(goals.map(g=>g.category));
+  [...gCats].forEach(c=>cats.add(c));
+  const scored=BLOG_BASE.map(b=>{
+    let score=0;
+    if(b.tags.includes('any'))score+=1;
+    b.tags.forEach(tag=>{if(cats.has(tag))score+=3});
+    return{...b,score};
+  });
+  return scored.sort((a,b)=>b.score-a.score);
+}
+
+function makeBlogCard(b,hasPersonal,clickFn){
+  const card=document.createElement('div');
+  card.className='bc';
+  card.style.cursor='pointer';
+  card.innerHTML=`
+    <div class="bc-img" style="background:${b.bg}">${b.emoji}</div>
+    <div class="bc-body">
+      ${b.score>1&&hasPersonal?'<div class="ai-badge">✨ Personalised for you</div>':''}
+      <span class="bpill" style="color:${b.pc};background:${b.pb}">${b.pill}</span>
+      <div class="btitle">${b.title}</div>
+      <div class="bexc">${b.exc}</div>
+      <div class="bmeta" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        📖 ${b.rt}
+        ${b.source?`<span class="src-tag" style="display:inline-flex;align-items:center;gap:3px;font-size:.6rem;font-weight:700;background:#f0ede8;color:#8a7060;border-radius:99px;padding:2px 7px;border:1px solid #e0d8cc;cursor:pointer" data-url="${b.url}">🔗 ${b.source}</span>`:''}
+      </div>
+    </div>`;
+  // Source tag opens URL in new tab, card click opens article
+  const srcTag=card.querySelector('.src-tag');
+  if(srcTag){
+    srcTag.addEventListener('click',e=>{
+      e.stopPropagation();
+      window.open(b.url,'_blank','noopener');
+    });
+  }
+  card.addEventListener('click', clickFn);
+  return card;
+}
+
+function renderJournalTeaser(){
+  const grid=document.getElementById('today-bg');if(!grid)return;
+  const articles=getRelevantArticles().slice(0,3);
+  const hasPersonal=habits.length>0||goals.length>0;
+  grid.innerHTML='';
+  articles.forEach(b=>{
+    grid.appendChild(makeBlogCard(b, hasPersonal, ()=>openBlogFromToday(b.id)));
+  });
+}
+
+function openBlogFromToday(id){
+  // Switch tab
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelector('[data-tab="journal"]').classList.add('active');
+  document.getElementById('tab-journal').classList.add('active');
+  // Build the listing silently in background (so Back button works)
+  renderJournal();
+  // Open the article directly — no setTimeout needed
+  openBlogArticle(id);
+}
+
+function renderJournal(){
+  const g=document.getElementById('jgrid');if(!g)return;
+  // First hide any open article so listing is visible
+  document.getElementById('bexp').classList.remove('open');
+  document.getElementById('blisting').style.display='';
+  const articles=getRelevantArticles();
+  const hasPersonal=habits.length>0||goals.length>0;
+  const [hero,...rest]=articles;
+  g.innerHTML='';
+
+  // Hero card — built with createElement
+  const heroCard=document.createElement('div');
+  heroCard.className='bhero';
+  heroCard.style.cursor='pointer';
+  heroCard.innerHTML=`
+    <div class="bhi" style="background:${hero.bg}">${hero.emoji}</div>
+    <div class="bhb">
+      ${hero.score>1&&hasPersonal?'<div class="ai-badge">✨ Personalised for you</div>':''}
+      <span class="bpill" style="color:${hero.pc};background:${hero.pb}">${hero.pill}</span>
+      <div class="btitle" style="font-size:1.05rem;margin-bottom:7px">${hero.title}</div>
+      <div class="bexc">${hero.exc}</div>
+      <div class="bmeta" style="margin-top:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        📖 ${hero.rt}
+        ${hero.source?`<span class="src-tag" style="display:inline-flex;align-items:center;gap:3px;font-size:.6rem;font-weight:700;background:#f0ede8;color:#8a7060;border-radius:99px;padding:2px 7px;border:1px solid #e0d8cc;cursor:pointer" data-url="${hero.url}">🔗 ${hero.source}</span>`:''}
+      </div>
+    </div>`;
+  const heroSrcTag=heroCard.querySelector('.src-tag');
+  if(heroSrcTag){heroSrcTag.addEventListener('click',e=>{e.stopPropagation();window.open(hero.url,'_blank','noopener')});}
+  heroCard.addEventListener('click', ()=>openBlogArticle(hero.id));
+  g.appendChild(heroCard);
+
+  // Rest grid — each card built with createElement
+  const restGrid=document.createElement('div');
+  restGrid.style.cssText='display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:11px';
+  rest.forEach(b=>{
+    restGrid.appendChild(makeBlogCard(b, hasPersonal, ()=>openBlogArticle(b.id)));
+  });
+  g.appendChild(restGrid);
+}
+
+function openBlogArticle(id){
+  const b=BLOG_BASE.find(x=>x.id===id);if(!b)return;
+  const scored=getRelevantArticles().find(x=>x.id===id);
+  const isPersonalised=scored&&scored.score>1&&(habits.length>0||goals.length>0);
+  document.getElementById('bexp-in').innerHTML=`
+    ${isPersonalised?'<div class="ai-badge" style="margin-bottom:10px">✨ Personalised for your habits &amp; goals</div>':''}
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:12px">
+      <span class="bpill" style="color:${b.pc};background:${b.pb}">${b.pill} · ${b.rt}</span>
+      ${b.source?`<span style="font-size:.68rem;font-weight:600;color:var(--t3)">via ${b.source}</span>`:''}
+    </div>
+    <h2>${b.title}</h2>
+    ${b.content}
+    ${b.url?`<div style="margin-top:20px"><button id="art-src-btn" style="display:inline-flex;align-items:center;gap:7px;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(193,123,63,.3)">🔗 Read original source ↗</button></div>`:''}`;
+  // Wire source button via addEventListener (no inline handlers)
+  const srcBtn=document.getElementById('art-src-btn');
+  if(srcBtn){srcBtn.addEventListener('click',()=>window.open(b.url,'_blank','noopener'));}
+  document.getElementById('blisting').style.display='none';
+  document.getElementById('bexp').classList.add('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.getElementById('bcb').addEventListener('click',()=>{
+  document.getElementById('bexp').classList.remove('open');
+  document.getElementById('blisting').style.display='';
+  renderJournal();
+});
+
+// ══════════════════════════════════════════════════════════════════════
+// REPORT
+// ══════════════════════════════════════════════════════════════════════
+let reportPeriod='thisweek';
+
+function popFilter(){
+  const sel=document.getElementById('r-filter'),cur=sel.value;
+  sel.innerHTML='<option value="all">All Habits</option>';
+  habits.forEach(h=>{const o=document.createElement('option');o.value=h.id;o.textContent=h.emoji+' '+h.name;sel.appendChild(o)});
+  if(cur)sel.value=cur;
+}
+
+// Returns array of complete calendar weeks (Mon–Sun) for the chosen period.
+// Each week is {mon, days:[7 date strings]}
+function getReportWeeks(){
+  const today=tStr();
+  // Find this Monday
+  const todayDt=new Date(today+'T12:00:00'),dow=todayDt.getDay();
+  const thisMon=new Date(todayDt);thisMon.setDate(todayDt.getDate()-(dow===0?6:dow-1));
+
+  function weekFrom(monDt){
+    const days=[];
+    for(let i=0;i<7;i++){const d=new Date(monDt);d.setDate(monDt.getDate()+i);days.push(d.toISOString().slice(0,10));}
+    return{mon:monDt.toISOString().slice(0,10),days};
+  }
+
+  if(reportPeriod==='thisweek'){
+    // Mon of this week → today only
+    const days=[];
+    for(let i=0;i<7;i++){const d=new Date(thisMon);d.setDate(thisMon.getDate()+i);const s=d.toISOString().slice(0,10);days.push(s);}
+    return[{mon:thisMon.toISOString().slice(0,10),days}];
+  }
+  if(reportPeriod==='lastweek'){
+    const lastMon=new Date(thisMon);lastMon.setDate(thisMon.getDate()-7);
+    return[weekFrom(lastMon)];
+  }
+  // last4weeks — 4 complete weeks ending last Sunday + this week
+  const weeks=[];
+  for(let w=3;w>=0;w--){
+    const mon=new Date(thisMon);mon.setDate(thisMon.getDate()-w*7);
+    weeks.push(weekFrom(mon));
+  }
+  return weeks;
+}
+
+function renderReport(){
+  const filt=document.getElementById('r-filter').value;
+  const sh=filt==='all'?habits:habits.filter(h=>h.id===filt);
+  const wrap=document.getElementById('r-wrap');
+  const today=tStr();
+  if(!sh.length){wrap.innerHTML=`<div class="empty" style="padding:24px 0"><span class="ei">📊</span><h3>No habits</h3><p>Add some habits first.</p></div>`;return}
+
+  const weeks=getReportWeeks();
+  // Flatten all days across weeks for the table columns, most-recent first
+  const allDays=weeks.flatMap(w=>w.days).reverse();
+
+  // For each habit compute rate
+  function habitRate(h){
+    const fn=freqN(h);
+    if(!fn){
+      // Daily: days completed / days elapsed (past only)
+      const past=allDays.filter(d=>d<=today);
+      const comp=past.filter(d=>isComp(h,d)).length;
+      return past.length?Math.round(comp/past.length*100):0;
+    } else {
+      // Frequency: average min(done,target)/target across weeks
+      let totalPct=0,count=0;
+      weeks.forEach(w=>{
+        // Only count weeks that have started (first day <= today)
+        if(w.days[0]>today)return;
+        const done=wkComp(h,w.mon);
+        totalPct+=Math.min(done,fn)/fn*100;
+        count++;
+      });
+      return count?Math.round(totalPct/count):0;
+    }
+  }
+
+  // Build column headers — show week separator if multi-week
+  let headerCells='';
+  if(weeks.length===1){
+    // Single week: show day columns
+    headerCells=allDays.map(d=>{
+      const dt=new Date(d+'T12:00:00');
+      return`<th>${dt.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase().slice(0,3)}<br><span style="font-size:.58rem;font-weight:400">${dt.getDate()}</span></th>`;
+    }).join('');
+  } else {
+    // Multi-week: show week ranges as column groups
+    headerCells=weeks.map(w=>{
+      const mon=new Date(w.mon+'T12:00:00'),sun=new Date(w.days[6]+'T12:00:00');
+      const fmt=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      return`<th colspan="1" style="white-space:nowrap">${fmt(mon)}–${fmt(sun)}</th>`;
+    }).reverse().join('');
+  }
+
+  let html=`<div class="rtwrap"><table class="rt"><thead><tr>
+    <th class="hc">Habit</th>${headerCells}<th>Rate</th>
+  </tr></thead><tbody>`;
+
+  sh.forEach(h=>{
+    const streak=getStreak(h),fn=freqN(h);
+    const rate=habitRate(h);
+    const rc=rate>=80?'var(--accent)':rate>=50?'var(--primary)':'var(--danger)';
+
+    let dataCells='';
+    if(weeks.length===1){
+      // Day-by-day cells for single week
+      dataCells=allDays.map(d=>{
+        if(d>today)return`<td><span style="color:var(--border2);font-size:.73rem">—</span></td>`;
+        const log=gLog(h.id,d),done=isComp(h,d);
+        if(fn){
+          if(done)return`<td><span class="chk">✓</span></td>`;
+          if(wkComp(h,d)>=fn)return`<td><span style="color:var(--accent);opacity:.4">✓</span></td>`;
+          return`<td><span class="crs">✕</span></td>`;
+        }
+        if(h.type==='check')return`<td>${done?`<span class="chk">✓</span>`:`<span class="crs">✕</span>`}</td>`;
+        const isOver=(h.operator==='lte'||h.operator==='lt')&&log.value>h.target;
+        return`<td><div class="rv ${done?'hit':''}" style="${isOver?'color:var(--danger)':''}">${log.value>0?log.value:'—'}</div><div class="rvs">${h.unit}</div></td>`;
+      }).join('');
+    } else {
+      // One cell per week showing sessions done / target (or days done)
+      dataCells=[...weeks].reverse().map(w=>{
+        if(w.days[0]>today)return`<td><span style="color:var(--border2);font-size:.73rem">—</span></td>`;
+        if(fn){
+          const done=wkComp(h,w.mon);
+          const weekPct=Math.round(Math.min(done,fn)/fn*100);
+          const col=weekPct>=100?'var(--accent)':weekPct>=50?'var(--primary)':'var(--danger)';
+          return`<td><div style="font-size:.8rem;font-weight:700;color:${col}">${done}/${fn}</div><div style="font-size:.62rem;color:var(--t3)">${weekPct}%</div></td>`;
+        } else {
+          const pastInWeek=w.days.filter(d=>d<=today);
+          const done=pastInWeek.filter(d=>isComp(h,d)).length;
+          const pct=pastInWeek.length?Math.round(done/pastInWeek.length*100):0;
+          const col=pct>=80?'var(--accent)':pct>=50?'var(--primary)':'var(--danger)';
+          return`<td><div style="font-size:.8rem;font-weight:700;color:${col}">${done}/${pastInWeek.length}</div><div style="font-size:.62rem;color:var(--t3)">${pct}%</div></td>`;
+        }
+      }).join('');
+    }
+
+    html+=`<tr>
+      <td class="hc"><span style="margin-right:3px">${h.emoji}</span><span class="rn">${h.name}</span>${streak>0?`<span class="rs">🔥 ${streak}${fn?'wk':'d'}</span>`:''}</td>
+      ${dataCells}
+      <td><span style="font-size:.76rem;font-weight:700;color:${rc}">${rate}%</span></td>
+    </tr>`;
+
+    if(fn){
+      const thisWeekDone=wkComp(h,today);
+      html+=`<tr class="fn-note"><td class="hc" colspan="${(weeks.length===1?allDays.length:weeks.length)+2}">Goal: ${fn}×/week · This week: ${thisWeekDone}/${fn} (${Math.round(Math.min(thisWeekDone,fn)/fn*100)}%)</td></tr>`;
+    }
+  });
+
+  html+='</tbody></table></div>';wrap.innerHTML=html;
+}
+
+// Report period button handlers
+document.querySelectorAll('.rpb').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.rpb').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');reportPeriod=b.dataset.rp;renderReport();
+  });
+});
+document.getElementById('r-filter').addEventListener('change',renderReport);
+
+// ══════════════════════════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════════════════════════
+document.querySelectorAll('.dpb').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('.dpb').forEach(x=>x.classList.remove('active'));b.classList.add('active');dashP=b.dataset.p;renderDash()})});
+// Get Monday of current week
+function thisWeekMon(){
+  const d=new Date(tStr()+'T12:00:00'),day=d.getDay();
+  const mon=new Date(d);mon.setDate(d.getDate()-(day===0?6:day-1));
+  return mon.toISOString().slice(0,10);
+}
+// Get days from a Monday through today (current week)
+function thisWeekDays(){
+  const mon=thisWeekMon(),days=[];
+  let d=new Date(mon+'T12:00:00');
+  while(d.toISOString().slice(0,10)<=tStr()){days.push(d.toISOString().slice(0,10));d.setDate(d.getDate()+1);}
+  return days;
+}
+function pDays(){
+  if(dashP==='week') return thisWeekDays(); // Mon→today of current week
+  if(dashP==='month') return getDays(30);
+  if(!habits.length)return getDays(30);
+  const e=habits.map(h=>h.createdAt).sort()[0];
+  const diff=Math.max(1,Math.round((new Date(tStr()+'T12:00:00')-new Date(e+'T12:00:00'))/86400000)+1);
+  return getDays(diff);
+}
+function gradeR(r){if(r>=85)return{g:'A',c:'gA'};if(r>=65)return{g:'B',c:'gB'};if(r>=40)return{g:'C',c:'gC'};return{g:'D',c:'gD'}}
+function renderDash(){
+  const days=pDays().filter(d=>d<=tStr());
+  if(!days.length){document.getElementById('d-metrics').innerHTML='<p style="color:var(--t3);font-size:.8rem">No data yet.</p>';return}
+
+  // habitScore: returns {done, total, pct} where pct = correct completion %
+  function habitScore(h,daysList){
+    const fn=freqN(h);
+    if(!fn){
+      // Daily habit: each day is either done or not
+      const done=daysList.filter(d=>isComp(h,d)).length;
+      return{done,total:daysList.length,pct:daysList.length?Math.round(done/daysList.length*100):0};
+    } else {
+      // Frequency habit: find unique calendar weeks, score each as min(done,target)/target
+      const weekMondays=new Set(daysList.map(d=>{
+        const dt=new Date(d+'T12:00:00'),day=dt.getDay();
+        const mon=new Date(dt);mon.setDate(dt.getDate()-(day===0?6:day-1));
+        return mon.toISOString().slice(0,10);
+      }));
+      let totalPct=0,weekCount=0;
+      weekMondays.forEach(monStr=>{
+        const done=wkComp(h,monStr);
+        totalPct+=Math.min(done,fn)/fn*100;
+        weekCount++;
+      });
+      const pct=weekCount?Math.round(totalPct/weekCount):0;
+      // For display: aggregate sessions done vs required across weeks
+      let totalDone=0;
+      weekMondays.forEach(monStr=>{totalDone+=Math.min(wkComp(h,monStr),fn);});
+      const totalRequired=weekCount*fn;
+      return{done:totalDone,total:totalRequired,pct};
+    }
+  }
+
+  // Overall metrics: average pct across all habits
+  const scores=habits.map(h=>habitScore(h,days));
+  const rate=scores.length?Math.round(scores.reduce((s,x)=>s+x.pct,0)/scores.length):0;
+  const perf=days.filter(d=>habits.length>0&&habits.every(h=>isComp(h,d))).length;
+  const avg=days.length?Math.round(habits.reduce((s,h)=>s+days.filter(d=>isComp(h,d)).length,0)/days.length*10)/10:0;
+
+  document.getElementById('d-metrics').innerHTML=`<div class="dm"><div class="dmv">${rate}%</div><div class="dml">Overall Rate</div><div class="dms">all habits</div></div><div class="dm"><div class="dmv">${perf}</div><div class="dml">Perfect Days</div><div class="dms">all done</div></div><div class="dm"><div class="dmv">${bestStreak()}</div><div class="dml">Best Streak</div><div class="dms">consecutive</div></div><div class="dm"><div class="dmv">${avg}</div><div class="dml">Avg / Day</div><div class="dms">completed</div></div>`;
+
+  const tb=document.getElementById('d-tbody');tb.innerHTML='';
+  habits.forEach(h=>{
+    const fn=freqN(h);
+    const {done,total,pct:r}=habitScore(h,days);
+    const streak=getStreak(h);
+    const {g,c}=gradeR(r),bc=r>=80?'var(--accent)':r>=50?'var(--gold)':'var(--danger)';
+    const gl=fn?`${fn}×/wk`:h.type==='quantity'?`${OL[h.operator||'gte']} ${h.target} ${h.unit}`:'Daily';
+    // Detail label: for freq habits "X/Y sessions", for daily "X/Y days"
+    const detail=fn?`${done}/${total} sessions`:`${done}/${total} days`;
+    tb.innerHTML+=`<tr>
+      <td><span style="margin-right:5px">${h.emoji}</span><strong>${h.name}</strong></td>
+      <td style="font-size:.71rem;color:var(--t2)">${gl}</td>
+      <td class="r"><div class="bw"><div class="bt"><div class="bf" style="width:${r}%;background:${bc}"></div></div><span class="pt" style="color:${bc}">${r}%</span></div>
+        <div style="font-size:.63rem;color:var(--t3);text-align:right;margin-top:1px">${detail}</div>
+      </td>
+      <td class="r" style="font-size:.79rem;font-weight:700">🔥 ${streak}</td>
+      <td class="r"><span class="grade ${c}">${g}</span></td>
+    </tr>`;
+  });
+  if(!habits.length)tb.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:18px;color:var(--t3)">No habits yet.</td></tr>`;
+
+  const hg=document.getElementById('hmg');hg.innerHTML='';
+  getDays(90).forEach(d=>{
+    const cell=document.createElement('span');cell.className='hmc';
+    if(d>tStr()){hg.appendChild(cell);return}
+    const n=habits.filter(h=>isComp(h,d)).length,t2=habits.length||1;
+    cell.classList.add(`hm${n===0?0:n===t2?4:n/t2>=.75?3:n/t2>=.4?2:1}`);
+    const dt=new Date(d+'T12:00:00');cell.title=`${dt.toLocaleDateString('en-US',{month:'short',day:'numeric'})}: ${n}/${t2}`;
+    hg.appendChild(cell);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// GLOBAL CLICK DELEGATION — absolute safety net for dynamic buttons
+// ══════════════════════════════════════════════════════════════════════
+document.addEventListener('click', function(e){
+  // Walk up to find a button with data-action
+  let el=e.target;
+  while(el && el!==document.body){
+    // Habit delete via ✕ button
+    if(el.classList&&el.classList.contains('ca-btn')&&el.classList.contains('del')&&el.dataset.id){
+      e.preventDefault();e.stopImmediatePropagation();
+      const id=el.dataset.id;
+      const h=habits.find(x=>x.id===id);
+      if(h){habits=habits.filter(x=>x.id!==id);save();renderToday();popFilter();toast({i:'🗑️',t:`"${h.name}" deleted`,m:'Habit removed.',c:'ts'})}
+      return;
+    }
+    // Habit edit via ✏️ button
+    if(el.classList&&el.classList.contains('ca-btn')&&el.classList.contains('edt')&&el.dataset.id){
+      e.preventDefault();e.stopImmediatePropagation();
+      openEditHabit(el.dataset.id);return;
+    }
+    // Task delete via 🗑 button
+    if(el.classList&&el.classList.contains('tab')&&el.classList.contains('del')&&el.dataset.id){
+      e.preventDefault();e.stopImmediatePropagation();
+      const id=el.dataset.id;
+      const t=tasks.find(x=>x.id===id);
+      if(t){tasks=tasks.filter(x=>x.id!==id);saveT();renderTasks();renderGoals();renderTStats();renderNotifs();toast({i:'🗑️',t:`"${t.title}" deleted`,m:'Task removed.',c:'ts'})}
+      return;
+    }
+    // Task edit
+    if(el.classList&&el.classList.contains('tab')&&el.classList.contains('edt')&&el.dataset.id){
+      e.preventDefault();e.stopImmediatePropagation();
+      openEditTask(el.dataset.id);return;
+    }
+    el=el.parentElement;
+  }
+},true); // capture phase = fires before anything else
+popFilter();popGoalSel();
+renderToday();renderTStats();renderJournalTeaser();
+// Restore any pending notification timers from localStorage
+Object.entries(reminders).forEach(([taskId,r])=>{
+  if(!r.fireAt)return;
+  const ms=new Date(r.fireAt)-new Date();
+  if(ms>0){
+    const t=tasks.find(x=>x.id===taskId);
+    if(t)scheduleNotif(taskId,r.time);
+  } else {
+    delete reminders[taskId];saveR();
+  }
+});
+</script>
+</body>
+</html>
